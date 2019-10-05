@@ -1,0 +1,60 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~font-awesome/css/font-awesome.min.css'; 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-form-field--inline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.mat-form-field--inline .mat-form-field {
+    display: inline-block;
+    /* width: 100%; */
+    vertical-align: middle
+ }
+
+.mat-form-field--inline .mat-form-field:nth-child(1) {
+    margin-right: 10px;
+}
+
+h1, h2 {
+    color: #0066cc
+    ;
+ }
+h3 {
+    color: #6699ff;
+ }
+
+ .card-body {
+     background-color: aliceblue
+ }
+
+ .card-header {
+    background: linear-gradient(to right, #3366cc 0%, #3399ff  100%);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: whitesmoke
+ }
+
+ .card-header h1 {
+    font-family: Calibri, Geneva, Tahoma, sans-serif;
+    color: whitesmoke
+ }
+
+ .three-col-div image {
+    max-width:100%;max-height:200px;padding-bottom:20px;padding-top:20px
+ }
+ 
+ .accordion .card-header:after {
+    font-family: 'FontAwesome';  
+    content: "\f068";
+    float: right; 
+}
+.accordion .card-header.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\f067"; 
+}

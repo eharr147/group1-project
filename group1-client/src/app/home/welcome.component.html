@@ -1,0 +1,59 @@
+﻿<div class="card">
+  <div class="card-header text-center">
+    <h1>{{pageTitle}}</h1>
+  </div>
+
+  <div class="card-body">
+    <div class="container-fluid">
+      <div class="text-center">
+        <h2>Let's cook tonight!</h2>
+
+      <div class="row">
+         
+        <div class="align-self-center col-sm-4">
+
+          <a [routerLink]="['/schedule-create']">
+              <img src="./assets/images/schedule_1.jpg"
+              class="img-responsive center-block "
+              style="max-width:100%;max-height:200px;padding-bottom:20px;padding-top:20px"/>
+          </a>
+
+          <br>
+          <a class="btn btn-primary" [routerLink]="['/schedule-create']">Plan a meal</a>
+        </div>
+
+        <div class="align-self-center col-sm-4">
+           
+            <a [routerLink]="['/catalog-search']">
+              <img src="./assets/images/recipe_1.jpg"
+              class="img-responsive center-block "
+              style="max-width:100%;max-height:200px;padding-bottom:20px;padding-top:20px"/>
+            </a>
+
+            <br>
+            <a class="btn btn-primary" [routerLink]="['/catalog-search']">Browse Recipes</a>
+          </div>
+ 
+          <div class="align-self-center col-sm-4">
+             
+              <a [routerLink]="['/groceries-create']">
+                <img src="./assets/images/groceries_2.jpg"
+                class="img-responsive center-block "
+                style="max-width:100%;max-height:200px;padding-bottom:20px;padding-top:20px"/>
+              </a>
+              <br>
+              <a class="btn btn-primary" [routerLink]="['/groceries-create']">Make a List</a>
+          </div>
+
+      </div>
+
+
+
+      <div class="text-center">
+        <small><i>Developed by {{this.author}}</i></small>
+      </div>
+
+      
+
+  </div>
+</div>

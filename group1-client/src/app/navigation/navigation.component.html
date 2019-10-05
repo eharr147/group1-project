@@ -1,0 +1,64 @@
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-header">
+            <a href="#" class="navbar-brand">{{this.title}}</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+            </button>
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown" >
+                <ul class="nav navbar-nav">
+                  <li class="nav-item active">
+                    <a class="nav-link" [routerLink]="['/welcome']">Home <span class="sr-only">(current)</span></a>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuRecipe" role="button" 
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Recipes
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuRecipe">
+                        <a class="dropdown-item" [routerLink]="['/recipes-create']">New Recipe</a>
+                        <a class="dropdown-item" [routerLink]="['/recipes-browse']">View my Recipes</a>
+                      </div>
+                    </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuSchedule" role="button" 
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Schedule
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuSchedule">
+                      <a class="dropdown-item" [routerLink]="['/schedule-create']">Plan a Meal</a>
+                      <a class="dropdown-item" [routerLink]="['/schedule-browse']">View my Schedule</a>
+                      <a class="dropdown-item" [routerLink]="['/catalog-search']">Browse Recipes</a>
+                    </div>
+                  </li>
+
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuGroceries" role="button" 
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Groceries
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuGroceries">
+                        <a class="dropdown-item" [routerLink]="['/groceries-create']">Create a Grocery List</a>
+                        <a class="dropdown-item" [routerLink]="['/groceries-browse']">View my Lists</a>
+                      </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuFeedback" role="button" 
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Feedback
+                      </a>
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuFeedback">
+                        <a class="dropdown-item" [routerLink]="['/feedback-create']">Create Feedback</a>
+                        <a class="dropdown-item" [routerLink]="['/feedback-browse']">View all Feedback</a>
+                      </div>
+                    </li>
+ 
+                </ul>
+            </div>
+        </div>  
+
+    </nav>          
+
+
+
+  

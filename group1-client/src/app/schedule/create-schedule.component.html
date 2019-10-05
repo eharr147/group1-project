@@ -1,0 +1,125 @@
+<div class="card">
+    <div class="card-header text-center">
+      <h1>{{this.title}}</h1>
+    </div>
+</div>
+
+<div class="card-body">
+    <div class="container-fluid">
+        <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()">
+            <div class="form-row">
+                <div class="col-xs-4 col-sm-4">
+                    <label for="mealDate">Date:</label>
+                    <input type="date" class="form-control" id="mealDate" formControlName="mealDate" required>
+                </div>
+                <div class="col-xs-2 col-sm-2">
+                    <label for ="mealTime">Meal Time:</label>
+                    <select class="form-control" id="mealTime" formControlName="mealTime">
+                      <option *ngFor="let mealTimeOption of mealTimeOptions" [ngValue]="mealTimeOption">
+                        {{ mealTimeOption.value }}
+                      </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div id="accordionDishes" class="accordion" style="padding-top:10px">
+                <div class="card mb-0">
+                    <div class="card-header collapsed" data-toggle="collapse" href="#collapseDishes">
+                        <a class="card-title">
+                            My Dishes
+                        </a>
+                    </div>
+                    <div id="collapseDishes" class="card-body collapse show" data-parent="#accordionDishes" >
+                        <div class="align-self-end col-xs-2 col-sm-2" *ngIf="scheduleForm.get('mealDishes').length==0">
+                            <button class="btn btn-primary" (click)="addDish('side');">Add Dish</button>
+                        </div>
+                        <div formArrayName="mealDishes" *ngFor="let address of mealDishes.controls; let i=index">
+                
+                            <div [formGroupName]="i"> 
+                              <div class="row">
+                                  <div class="self-align-start col-xs-4 col-sm-4">
+                                      <label for="{{ 'dishType' + i}}">Dish type</label>
+                                  
+                                      <select class="form-control" formControlName="dishType" id="{{ 'dishType' + i}}">
+                                        <option *ngFor="let dishTypeOption of dishTypeOptions" [ngValue]="dishTypeOption">
+                                          {{ dishTypeOption.value }}
+                                        </option>
+                                      </select>
+                                  </div>
+          
+
+                              </div>
+                              
+                                <label for="{{ 'recipeTitle' + i}}">Recipe Title</label>  
+                                <input type="text" class="form-control col-xs-4 col-sm-4" formControlName="recipeTitle" id="{{ 'recipeTitle' + i}}" required> 
+                                <label for="{{ 'recipeDesc' + i}}">Description</label>
+                                <textarea class="form-control col-xs-4 col-sm-4" rows="3" formControlName="recipeDesc" id="{{ 'recipeDesc' + i}}"></textarea>
+                                <div class="row" style="padding-top:20px">
+                                    <div class="align-self-end col-xs-2 col-sm-2" >
+                                        <button class="btn btn-danger" (click)="removeDish(i)">Delete Dish</button>
+                                    </div> 
+                                    <div class="align-self-end col-xs-4 col-sm-4" style="padding-top:5px">
+                                        <button class="btn btn-primary" (click)="addDish('side');">Add Another Dish</button>
+                                    </div>
+                                </div>
+                                <hr>
+                                               
+                            </div>
+                    </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div id="accordion" class="accordion">
+                <div class="card mb-0">
+                    <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                        <a class="card-title">
+                            My Notes
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="card-body collapse" data-parent="#accordion" formArrayName="mealNotes">
+                        <div class="align-self-end col-xs-2 col-sm-2">
+                            <button class="btn btn-primary" (click)="addNote();">Add Note</button>
+                        </div>
+                        <div class="row" style="padding-top: 20px" *ngFor="let address of mealNotes.controls; let i1=index">
+                            <!-- The repeats Notes template -->
+                            <div class="align-self-center col-xs-4 col-sm-4">
+                              <textarea class="form-control" rows="3" [formControlName]="i1"></textarea>
+                            </div>
+                            <div class="align-self-end col-xs-2 col-sm-2">
+                                <button class="btn btn-danger" (click)="removeNote(i)">Delete Note</button>
+                            </div>
+                          </div> 
+                    </div>
+                </div>
+            </div>
+        <!-- -->
+          <div class="row" style="padding: 20px">
+            <div  style="padding-top: 20px">
+                <button class="btn btn-primary" type="submit" [disabled]="!scheduleForm.valid"
+                (click)="saveSchedule()">Add to my Schedule</button>
+            </div>
+            <div  style="padding: 20px 10px">
+                <button class="btn btn-secondary" type="cancel" (click)="onCancel()">Cancel</button>
+            </div>
+
+
+          </div>
+        </form>
+    </div>
+</div>
+
+
+  <h5>Value</h5>
+  <p>
+    Form Status: {{ scheduleForm.status }}
+  </p>
+  <pre>{{scheduleForm.value | json}}</pre>

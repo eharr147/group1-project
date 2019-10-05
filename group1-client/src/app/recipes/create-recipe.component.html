@@ -1,0 +1,86 @@
+<h1>create-recipe under development - Harika</h1>
+<div> 
+    <form [formGroup]="recipeForm">
+    
+    <label>
+      Recipe Name:
+      <input type="text" [formControl]="name">
+    </label>
+    
+    <div formArrayName="ingredients">
+      
+      <table>
+          <thead>
+           
+            
+          </thead>
+        <tbody>
+          <tr  *ngFor="let ing of ingredients.controls; let i=index" >
+        <!-- The repeated alias template -->
+         
+              
+        </tr>
+      </tbody>
+    </table>
+      
+      
+    </div>
+    <div formArrayName="ingredientsWithQuantity" >
+    <h3>Input Ingredient Info</h3> 
+        <table>
+            <thead>
+              <th>Ingredient</th>
+              <th>Quantity</th>
+              <th>Steps</th>
+            </thead>
+          <tbody>
+            <tr  *ngFor="let ing of this.recipeForm.get('ingredientsWithQuantity').controls; let i=index" formGroupName={{i}} >
+          <!-- The repeated alias template -->
+            <td> <input type="text" formControlName="name"> </td>
+            <td> <input type="text" formControlName="quantity"></td>   
+            <td> <input type="text" formControlName="steps"></td>
+          </tr>
+        </tbody>
+      </table>
+        <button (click)="addingredientsWithQuantity()">Add</button>
+        
+      </div>
+    <div>
+        <h2>Recipe</h2>
+      <p>
+        Name: {{ name.value }}
+      </p>
+      <h3>Ingredients</h3>
+      <div *ngFor="let ing of ingredients.controls; let i=index">
+        <!-- The repeated alias template -->    
+          <p>{{ing.value}}</p>
+      </div>
+      
+      <table>
+          <thead>
+            <th>Ingredients:</th>
+            <th>Quantity:</th>
+            <th>Steps:</th>
+    
+          </thead>
+        <tbody>
+          <tr  *ngFor="let ing of this.recipeForm.get('ingredientsWithQuantity').controls; let i=index" >
+        <!-- The repeated alias template -->    
+          <td>{{ing.controls.name.value}}</td>
+          <td>{{ing.controls.quantity.value}}</td>
+          <td>{{ing.controls.steps.value}}</td>
+          </tr>
+        </tbody>
+      </table> 
+    
+        </div>
+    
+    </form>
+    </div>
+    <h5>Value</h5>
+    <p>
+      Form Status: {{ recipeForm.status }}
+    </p>
+    <pre>{{recipeForm.value | json}}</pre>
+
+
