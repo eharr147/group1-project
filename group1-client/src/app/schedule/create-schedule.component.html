@@ -1,3 +1,4 @@
+<app-navigation></app-navigation>
 <div class="card">
     <div class="card-header text-center">
       <h1>{{this.title}}</h1>
@@ -6,7 +7,7 @@
 
 <div class="card-body">
     <div class="container-fluid">
-        <form [formGroup]="scheduleForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="scheduleForm" >
             <div class="form-row">
                 <div class="col-xs-4 col-sm-4">
                     <label for="mealDate">Date:</label>
@@ -15,9 +16,10 @@
                 <div class="col-xs-2 col-sm-2">
                     <label for ="mealTime">Meal Time:</label>
                     <select class="form-control" id="mealTime" formControlName="mealTime">
-                      <option *ngFor="let mealTimeOption of mealTimeOptions" [ngValue]="mealTimeOption">
-                        {{ mealTimeOption.value }}
-                      </option>
+                      <option value="breafast">Breakfast</option>
+                      <option value="lunch">Lunch</option>
+                      <option value="dinner">Dinner</option>
+                      <option value="snack">Snack</option>
                     </select>
                 </div>
 
@@ -32,7 +34,7 @@
                     </div>
                     <div id="collapseDishes" class="card-body collapse show" data-parent="#accordionDishes" >
                         <div class="align-self-end col-xs-2 col-sm-2" *ngIf="scheduleForm.get('mealDishes').length==0">
-                            <button class="btn btn-primary" (click)="addDish('side');">Add Dish</button>
+                            <button class="btn btn-primary" (click)="goCatalog();">Pick Recipes</button>
                         </div>
                         <div formArrayName="mealDishes" *ngFor="let address of mealDishes.controls; let i=index">
                 
@@ -42,9 +44,10 @@
                                       <label for="{{ 'dishType' + i}}">Dish type</label>
                                   
                                       <select class="form-control" formControlName="dishType" id="{{ 'dishType' + i}}">
-                                        <option *ngFor="let dishTypeOption of dishTypeOptions" [ngValue]="dishTypeOption">
-                                          {{ dishTypeOption.value }}
-                                        </option>
+                                        <option value="main">Main Dish</option>
+                                        <option value="side">Side Dish</option>
+                                        <option value="dessert">Dessert</option>
+                                        <option value="snack">Snack</option>
                                       </select>
                                   </div>
           
@@ -60,7 +63,7 @@
                                         <button class="btn btn-danger" (click)="removeDish(i)">Delete Dish</button>
                                     </div> 
                                     <div class="align-self-end col-xs-4 col-sm-4" style="padding-top:5px">
-                                        <button class="btn btn-primary" (click)="addDish('side');">Add Another Dish</button>
+                                        <button class="btn btn-primary" (click)="goCatalog();">Pick More Recipes</button>
                                     </div>
                                 </div>
                                 <hr>
@@ -71,12 +74,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
 
             <div id="accordion" class="accordion">
                 <div class="card mb-0">
@@ -117,9 +114,9 @@
     </div>
 </div>
 
-
-  <h5>Value</h5>
-  <p>
-    Form Status: {{ scheduleForm.status }}
-  </p>
+<h5>Form State</h5>
+<pre>{{scheduleForm.status}}</pre>
+  <h5>Form Value</h5>
   <pre>{{scheduleForm.value | json}}</pre>
+  <h5>Selections Value</h5>
+  <pre>{{queueService.recipes | json}}</pre>

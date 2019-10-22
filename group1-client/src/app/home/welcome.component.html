@@ -1,4 +1,5 @@
-﻿<div class="card">
+﻿<app-navigation></app-navigation>
+<div class="card">
   <div class="card-header text-center">
     <h1>{{pageTitle}}</h1>
   </div>
@@ -23,15 +24,15 @@
         </div>
 
         <div class="align-self-center col-sm-4">
-           
-            <a [routerLink]="['/catalog-search']">
+         
+            <a [routerLink]="['/catalog-browse']">
               <img src="./assets/images/recipe_1.jpg"
               class="img-responsive center-block "
               style="max-width:100%;max-height:200px;padding-bottom:20px;padding-top:20px"/>
             </a>
 
             <br>
-            <a class="btn btn-primary" [routerLink]="['/catalog-search']">Browse Recipes</a>
+            <a class="btn btn-primary" [routerLink]="['/catalog-browse']">Browse Recipes</a>
           </div>
  
           <div class="align-self-center col-sm-4">

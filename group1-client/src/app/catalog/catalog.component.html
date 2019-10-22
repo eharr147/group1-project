@@ -1,0 +1,91 @@
+<app-navigation></app-navigation>
+<div class="card">
+    <div class="card-header">
+        <div class="row" style="padding-top: 20px">
+          <div class="align-self-start col-xs-4 col-sm-4">Browse our delicious recipes</div>
+          <div class="align-self-center col-xs-4 col-sm-4">
+            <button class="btn btn-outline-light" (click)="goSchedule();">Add to New Plan</button>
+          </div>
+          <div class="align-self-end col-xs-4 col-sm-4">
+            <button class="btn btn-outline-light" (click)="goScheduleBrowse();">Add to Existing Plan</button>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+          <div class="row">
+              <div class="col-sm-2">Filter by: </div>
+              <div class="col-sm-2"><input type="text" [(ngModel)]='listFilter'/></div>
+            </div>
+            <div class="row">
+            <div class="col-sm-2">Filtered by {{listFilter}} </div>
+          
+      </div>
+    </div>
+    <div>
+
+          <div id="accordion" class="accordion">
+              <div class="card mb-0">
+                  <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                      <a class="card-title">
+                          My selected recipes
+                      </a>
+                  </div>
+                  <div id="collapseOne" class="card-body collapse" data-parent="#accordion" >
+                    <div *ngIf="queueService.recipes.length==0">You have not picked any recipes yet.</div>
+                    <div class="row" style="padding-top: 20px" *ngFor="let selRecipe of queueService.recipes; let i=index">
+
+                          <div class="align-self-center col-xs-4 col-sm-4"><p>{{ selRecipe.name }}</p>
+                           </div>
+                          <div class="align-self-end col-xs-2 col-sm-2">
+                              <button class="btn btn-danger btn-sm" (click)="removeSelection(i)">Remove</button>
+                          </div>
+                        </div> 
+                  </div>
+              </div>
+          </div>
+
+    </div>
+      <div class="table-responsive">
+          <table class="table" *ngIf='recipes && recipes.length > 0'>
+              <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Meal</th>
+                    <th scope="col">Use as</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let thisRecipe of filteredRecipes'>
+                      <td>{{thisRecipe.name}}</td>
+                      <td>{{thisRecipe.description}}</td>
+                      <td>{{thisRecipe.meal}}</td>
+                      <td>{{thisRecipe.usage}}</td>
+                      <td>{{thisRecipe.calories}}</td>
+                      <td>
+                          <div class="btn-group mr-2">
+                              <button class="btn btn-primary" (click)="addSelection(thisRecipe._id);">Select</button>
+                              <button class="btn btn-success" (click)="addSelectionAndFinish(thisRecipe._id);">Quick Plan</button>
+                            </div>
+                      </td>
+                    </tr>
+
+                </tbody>
+          </table>
+
+
+</div>
+<!--
+<ul>
+  <li *ngFor="let recipe of recipes">
+      {{recipe.name}}
+ 
+    <a routerLink="/detail/{{hero.id}}">
+      <span class="badge">{{hero.id}}</span> {{hero.name}}
+    </a>
+ 
+  </li>
+</ul>
+-->
