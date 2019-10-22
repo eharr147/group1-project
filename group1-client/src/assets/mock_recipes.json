@@ -1,0 +1,130 @@
+[
+    {
+        "_id":"avdgfhbfjb1",
+        "name": "Banana Pancakes",
+        "description": "A favorite breakfast item. Or dinner too!",
+        "cuisine":"american",
+        "meal":"breakfast",
+        "usage":"main",
+        "keywords" :["vegan","vegetarian", "low fat", "healthy"],
+        "effort_lvl":"easy",
+        "prep_time":20,
+        "sugar_lvl":"low",
+        "contributor":"chef",
+        "servings":2,
+        "calories":325,
+        "main_ingredients":["oatmeal","oats","fruit"],
+        
+        "ingredients": [
+            {
+                "quantity": 2,
+                "unit": "cups",
+                "name": "bananas"
+            },
+            {
+                "quantity": 5,
+                "unit": "whole pieces",
+                "name": "strawberries"
+            },
+            {
+                "quantity": 8,
+                "unit": "pieces",
+                "name": "blueberries"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "milk"
+            },
+            {
+                "quantity": 1,
+                "unit": "tbsp",
+                "name": "butter"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "cinnamon"
+            },
+            {
+                "quantity": "1.4 ",
+                "unit": "cup",
+                "name": "oats"
+            }
+        ],
+        "steps": [
+            "Wash and cut the fruit pieces",
+            "Add banana,blueberries,milk,oats, and cinnamon to a blender to: Puree",
+            "Heat the pan and add a teaspoon of butter",
+            "pour 1/4 cup of mixture into medium heat pan",
+            "cook until brown: about 2-3 minutes on each side",
+            "serve with slices of strawberries"
+        ]
+    },
+    {
+        "_id":"avdgfhbfjb2",
+        "name": "Brocolli Fritata",
+        "description": "Classic Spanish dish.",
+        "cuisine":"spain",
+        "meal":"lunch",
+        "usage":"main",
+        "keywords":["protein","vegetarian", "brunch"],
+        "effort_lvl":"easy",
+        "prep_time":30,
+        "contributor":"chef",
+        "allergies":["dairy","eggs"],
+        "servings":3,
+        "calories":425,
+        "sugar_lvl":"none",
+        "main_ingredients":["brocolli","cheese","eggs"],
+
+        "ingredients": [
+            {
+                "quantity": 2,
+                "unit": "crowns",
+                "name": " Broccoli"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "Grated chedar cheese"
+            },
+            {
+                "quantity": 6,
+                "unit": "whole",
+                "name": "eggs"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "onion"
+            },
+            {
+                "quantity": "1",
+                "unit": "slab",
+                "name": "butter"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "salt"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "pepper"
+            }
+        ],
+        "steps": [
+            "peel and dice the onion. Dice broccoli bite-size pieces",
+            "heat the pan to medium heat",
+            "turn the oven on the broiler setting",
+            "add butter to pan to cover the bottom. Add onions and cook till translucent",
+            "add in the broccoli and cook until brown",
+            "in a seperate bowl mix: 6 eggs,dash of salt,pepper",
+            "pour the egg mixture over the cooked broccoli",
+            "gently place the pan in the top row of the oven ",
+            "Cook for about 6-7 minutes. Enjoy!"
+        ]
+    }
+]

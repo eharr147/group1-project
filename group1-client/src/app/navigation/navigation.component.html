@@ -2,6 +2,8 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="navbar-header">
             <a href="#" class="navbar-brand">{{this.title}}</a>
+              Hi {{currentUser.firstName}}!
+            
 
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,7 +31,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuSchedule">
                       <a class="dropdown-item" [routerLink]="['/schedule-create']">Plan a Meal</a>
                       <a class="dropdown-item" [routerLink]="['/schedule-browse']">View my Schedule</a>
-                      <a class="dropdown-item" [routerLink]="['/catalog-search']">Browse Recipes</a>
+                      <a class="dropdown-item" [routerLink]="['/catalog-browse']">Browse Recipes</a>
                     </div>
                   </li>
 
@@ -54,6 +56,8 @@
                     </li>
  
                 </ul>
+                <a class="nav-link" (click)="logout()">logout</a>
+               
             </div>
         </div>  
 
