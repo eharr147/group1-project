@@ -44,6 +44,8 @@ get f() { return this.registerForm.controls;}
 onSubmit(){
 
   this.submitted=true;
+  console.log('Register form')
+  console.log(this.f)
   //stop here if form is invalid
   if(this.registerForm.invalid){
     return;
