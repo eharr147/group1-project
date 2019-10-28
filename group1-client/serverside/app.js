@@ -59,8 +59,23 @@ app.get('/schedule/edit/:id'),(function (req, res, next) {
  });
  
   
- /*  End of requests to schedules */ 
+ /*  End of requests to Schedule Module */ 
  
+/* Requests for Grocery module */
+app.get('/groceries',(req, res, next) => {
+   const groceries=[{"ingredient":"Lettuce","quantity":"1"},
+                    {"ingredient":"Tomato","quantity":"2"}];
+ res.json(groceries);
+});
+
+app.post('/groceries', (req, res, next) => {
+   const grocery = req.body;
+   console.log(grocery.ingredient + " " + grocery.quantity);
+ //sent an acknowledgment back to caller 
+   res.status(201).json('Post successful');
+ })
+
+/*  End of requests to Grocery module */ 
 
 
 //to use this middleware in other parts of the application
