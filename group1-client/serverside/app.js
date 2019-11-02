@@ -3,6 +3,21 @@ const express = require('express');
 const app = express();
 const bodyParser  = require('body-parser');
 
+const mongoose = require('mongoose');
+//specify where to find the schema
+const Schedule = require('./models/schedule')
+const Catalog = require('./models/recipe')
+const feedbacks=require('./models/feedbackhistory');
+const users=require('./models/Users');
+
+// connect and display the status 
+mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
+  .then(() => { console.log("connected"); })
+  .catch(() => { console.log("error connecting"); });
+
+
+
+
 // use the following code on any request that matches the specified mount path
 app.use((req, res, next) => {
    console.log('This line is always called');
@@ -11,7 +26,7 @@ app.use((req, res, next) => {
  //  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
 
    res.header("Access-Control-Allow-Origin", "*");
-   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
 
    // Fix HTTP header issues when using authentication
@@ -28,39 +43,186 @@ app.use(bodyParser.json());
 
 
 /* Requests for schedule module*/
+/* Find all schedules in database */
 app.get('/schedules', (req, res, next) => {
-   /* Serve mock data in JSON file */
-    let jsonObj= require('./mock_schedules.json')
-    res.json(jsonObj)
-    console.log('This is the response from schedules');
- 
+    //call mongoose method find 
+   Schedule.find().sort('mealDate') 
+   //if data is returned, send data as a response 
+   .then(data => res.status(200).json(data))
+   //if error, send internal server error
+   .catch(err => {
+   console.log('Error: ${err}');
+   res.status(500).json(err);
  });
- 
-
-  app.post('/schedule/add', (req, res, next) => {
-   const schedule = req.body;
-   //sent an acknowledgment back to caller 
-   console.log('Schedules post form:')
-   console.log(schedule)
-
-   res.status(201).json('Post successful');
- });
-
-
- // Defined edit route -- not working - wait until LAB 10
-app.get('/schedule/edit/:id'),(function (req, res, next) {
-   let id = req.params.id;
-   console.log('schedule/edit got id = ' + id)
-   let jsonObj= require('./mock_schedules.json')
-   var toSelect = (this.jsonObj.findIndex(c => c._id == id));
-
-   res.json(jsonObj[toSelect]);
- 
- });
- 
+     console.log('This is the response from schedules');
   
- /*  End of requests to Schedule Module */ 
+  });
  
+
+ /* Find  schedules by user */
+ app.get('/schedule/user/:id', (req, res, next) => {
+   let id = req.params.id;
+   //call mongoose method find (MongoDB db.Students.find())
+  Schedule.find({ userId: id}).sort('mealDate') 
+  //if data is returned, send data as a response 
+  .then(data => res.status(200).json(data))
+  //if error, send internal server error
+  .catch(err => {
+  console.log('Error: ${err}');
+  res.status(500).json(err);
+ });
+    console.log('This is the response from schedule/user');
+ 
+ });
+ 
+ 
+ 
+  app.get('/schedule/edit/:id', (req, res, next) => {
+   //call mongoose method find
+   let id = req.params.id;
+   console.log('schedule/edit id is ' + id)
+  Schedule.findById(id) 
+  //if data is returned, send data as a response 
+  .then(data => res.status(200).json(data))
+ 
+  //if error, send internal server error
+  .catch(err => {
+  console.log('Error: ${err}');
+  res.status(500).json(err);
+ });
+    console.log('This is the response from schedule/edit');
+ 
+ });
+ 
+ 
+   app.post('/schedule/add', (req, res, next) => {
+  // create a new schedule variable and save request’s fields 
+  
+  const schedulef = req.body;
+    //sent an acknowledgment back to caller 
+    console.log('Schedules post form:')
+    console.log(schedulef)
+  
+  const schedule = new Schedule({
+    userId: req.body.userId,
+    mealDate: req.body.mealDate,
+    mealTime: req.body.mealTime,
+    mealDishes: req.body.mealDishes,
+    mealNotes: req.body.mealNotes
+  });
+  
+  console.log('schedules object - Mongoose:')
+  console.log(schedule)
+ 
+  //send the document to the database 
+  schedule.save()
+    //in case of success
+    .then(() => { 
+      console.log('Success');
+      res.status(201).json({'schedule': 'schedule added successfully'});    
+     })
+    //if error
+    .catch(err => {
+      console.log('Error:' + err);
+      res.status(400).send("unable to save to database")
+     });
+ 
+    //sent an acknowledgment back to caller 
+    //res.status(201).json('Post successful');
+  });
+ 
+  /* schedule update */
+  app.put('/schedule/update/:id', (req, res, next) => {
+    console.log("/schedule/update id = " + req.params.id)
+   
+   // create a new schedule variable and save request’s fields 
+     const schedulef = req.body;
+     //sent an acknowledgment back to caller 
+     console.log('Schedules post form:')
+     console.log(schedulef)
+   
+   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+   //find a document and set updated field values
+   Schedule.findOneAndUpdate({_id: req.params.id},
+       {$set:
+         {
+           mealDate: req.body.mealDate,
+           mealTime: req.body.mealTime,
+           mealDishes: req.body.mealDishes,
+           mealNotes: req.body.mealNotes
+         }},{new:true}) 
+    .then((results) => {
+       if (results) { //what was updated
+         console.log('schedule update results')
+         console.log(results);
+         res.status(200).json("Updated!");
+       } else {
+         console.log("no data exist for this id");
+       }
+    })
+   .catch((err) => {
+     console.log('schedule update error')
+     console.log(err);
+    });
+ } else {
+  console.log("please provide correct id");
+ }
+ 
+   });
+  
+ 
+ /* delete schedule */
+ //:id is a dynamic parameter that will be extracted from the URL
+ app.delete("/schedules/:id", (req, res, next) => {
+    console.log('app.js deleteSchedule - id = ' + req.params.id)
+    Schedule.deleteOne({ _id: req.params.id }).then(result => {
+      console.log(result);
+      res.status(200).json("Deleted!");
+    });
+  });
+ 
+   
+  /*  End of requests to schedules */ 
+  
+ /* Requests to Recipes via Catalog module */
+ app.get('/catalog', (req, res, next) => {
+ 
+   //call mongoose method find 
+  Catalog.find() 
+  //if data is returned, send data as a response 
+  .then(data => res.status(200).json(data))
+  //if error, send internal server error
+  .catch(err => {
+  console.log('Error: ${err}');
+  res.status(500).json(err);
+ });
+ 
+ 
+    console.log('This is the response from Catalog get all');
+ 
+ });
+ 
+ 
+ app.get('/catalog/:id', (req, res, next) => {
+   //call mongoose method find
+   let id = req.params.id;
+   console.log('schedule/edit id is ' + id)
+  Catalog.findById(id) 
+  //if data is returned, send data as a response 
+  .then(data => res.status(200).json(data))
+ 
+  //if error, send internal server error
+  .catch(err => {
+  console.log('Error: ${err}');
+  res.status(500).json(err);
+ });
+    console.log('This is the response from catalog/id');
+ 
+ });
+ 
+ 
+ /* End of requests to Catalog */ 
+  
 /* Requests for Grocery module */
 app.get('/groceries',(req, res, next) => {
    const groceries=[{"ingredient":"Lettuce","quantity":"1"},
@@ -76,6 +238,291 @@ app.post('/groceries', (req, res, next) => {
  })
 
 /*  End of requests to Grocery module */ 
+
+  /* Feedback History*/
+  app.get('/feedbackhistory', (req, res, next) => {
+    /* Serve mock data in JSON file */
+     //let jsonObj= require('./mock_feedbackhistory.json')
+     //res.json(jsonObj)
+     feedbacks.find().then(data=>res.status(200).json(data))
+     .catch(err=>{
+       console.log('Error: ${err}');
+       res.status(500).json(err);
+   
+   });
+     console.log('This is the response from feedbacks');
+  
+  });
+
+/* Find  feedback by user */
+app.get('/feedback/user/:userId', (req, res, next) => {
+  console.log('feedback/user called' + req.params.userId)
+  let id = req.params.userId;
+  //call mongoose method find 
+ feedbacks.find({ userId: id}).sort('recipeTitle') 
+ //if data is returned, send data as a response 
+ .then(data => res.status(200).json(data))
+ //if error, send internal server error
+ .catch(err => {
+ console.log('Error: ${err}');
+ res.status(500).json(err);
+});
+   console.log('This is the response from feedback/user');
+
+});
+
+
+
+  //Get Feedback by RecipeID
+ app.get("/feedback/find/:Recipeno",(req,res,next)=>{
+   console.log('feedback/find/recipeNo')
+   console.log(req.params.Recipeno)
+   feedbacks.find({Recipeno:req.params.Recipeno},
+    {'userId': true, 'recipeTitle': true, 'firstname':true,'Lastname':true,'comments':true}).then(result=>{
+     console.log(result);
+     res.status(200).json(result);
+   });
+ });
+ 
+ app.get("/feedback/edit/:id",(req,res,next)=>{
+   feedbacks.find({id:req.params._id},
+    {'userId': true, 'recipeTitle': true,'firstname':true,'Lastname':true,'Recipeno':true,'comments':true}).then(result=>{
+     console.log(result);
+     res.status(200).json(result);
+   });
+ });
+ 
+ 
+  app.post('/feedback/add', (req, res, next) => {
+   // const feedback = req.body;
+   const feedback=new feedbacks({
+     userId: req.body.userId,
+     recipeTitle: req.body.recipeTitle,
+     firstname:req.body.firstname,
+     Lastname:req.body.Lastname,
+     Recipeno:req.body.Recipeno,
+     comments:req.body.comments
+   });
+   console.log('feedback/add called')
+   console.log(feedback)
+   feedback.save()
+   .then(()=>{console.log('Success');})
+   .catch(err=>{console.log('Error:'+err);});
+    //sent an acknowledgment back to caller 
+    console.log('feedback post form:')
+    console.log(feedback)
+ 
+    res.status(201).json('Post successful');
+  });
+ 
+ app.put("/feedback/update/:_id",(req,res,next)=>{
+   console.log("_id:"+req.params._id)
+   if(mongoose.Types.ObjectId.isValid(req.params._id)){
+     feedbacks.findOneAndUpdate({
+       _id:req.params._id},
+       {$set:{comments:req.body.comments,
+        // Updte comment field only. All other fields are keys or derived from keys
+       // Recipeno:req.body.Recipeno,firstname:req.body.firstname,Lastname:req.body.Lastname
+      }},{new:true})
+       .then((feedbacks)=>{
+         if(feedbacks) {
+           console.log(feedbacks);
+         }
+         else{
+           console.log("no data for this id");
+         }
+       }).catch((err)=>{
+         console.log(err);
+       });
+     }else{
+       console.log('please provide correct id');
+     }
+ })
+ 
+  app.delete("/feedback/delete/:id",(req,res,next)=>{
+    feedbacks.deleteOne({_id:req.params.id}).then(result=>{
+      console.log(result);
+      res.status(200).json("Deleted!");
+    });
+  });
+ /* end requests Feedback History */
+ 
+  /* User Login and Registration*/
+  app.get("/users/authenticate/:username/:password", (req, res, next) => {
+   
+     users.find({username:req.params.username}).then(result=>{
+     console.log(result);
+     res.status(200).json(result);
+   });
+  
+   
+  });
+ 
+  app.get("/users",(req,res,next)=>{
+    console('users find called')
+   users.find().then(data=>res.status(200).json(data))
+   .catch(err=>{
+     console.log('Error: ${err}');
+     res.status(500).json(err);
+  });
+ });
+  app.post('/Users/register', (req, res, next) => {
+   // const feedback = req.body;
+   const userrecord=new users({
+     Firstname:req.body.Firstname,
+     Lastname:req.body.Lastname,
+     username:req.body.username,
+     password:req.body.password
+   });
+
+   console.log('users/register')
+   console.log(userrecord)
+  userrecord.save()
+   .then(()=>{console.log('Success');})
+   .catch(err=>{console.log('Error:'+err);});
+    //sent an acknowledgment back to caller 
+    console.log('user post form:')
+    console.log(userrecord)
+ 
+    res.status(201).json('Post successful');
+  });
+/* end requests User/authentication */
+  
+/* Requests to Recipes module */
+app.get('/recipes', (req, res, next) => {
+  const recipes = [ 
+    {
+        "name": "Banana Pancakes",
+        "description": "A favorite breakfast item. Or dinner too!",
+        "cuisine":"american",
+        "usage":"breakfast",
+        "effort_lvl":"easy",
+        "contributor":"chef",
+        "servings":2,
+        "calories":325,
+        
+        "ingredients": [
+            {
+                "quantity": 2,
+                "unit": "cups",
+                "name": "bananas"
+            },
+            {
+                "quantity": 5,
+                "unit": "whole pieces",
+                "name": "strawberries"
+            },
+            {
+                "quantity": 8,
+                "unit": "pieces",
+                "name": "blueberries"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "milk"
+            },
+            {
+                "quantity": 1,
+                "unit": "tbsp",
+                "name": "butter"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "cinnamon"
+            },
+            {
+                "quantity": "1.4 ",
+                "unit": "cup",
+                "name": "oats"
+            }
+        ],
+        "steps": [
+            "Wash and cut the fruit pieces",
+            "Add banana,blueberries,milk,oats, and cinnamon to a blender to: Puree",
+            "Heat the pan and add a teaspoon of butter",
+            "pour 1/4 cup of mixture into medium heat pan",
+            "cook until brown: about 2-3 minutes on each side",
+            "serve with slices of strawberries"
+        ]
+    },
+    {
+        "name": "Brocolli Fritata",
+        "description": "Classic Spanish dish.",
+        "cuisine":"spain",
+        "usage":"main",
+        "effort_lvl":"easy",
+        "contributor":"chef",
+        "servings":3,
+        "calories":425,
+        "ingredients": [
+            {
+                "quantity": 2,
+                "unit": "crowns",
+                "name": " Broccoli"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "Grated chedar cheese"
+            },
+            {
+                "quantity": 6,
+                "unit": "whole",
+                "name": "eggs"
+            },
+            {
+                "quantity": 0.5,
+                "unit": "cups",
+                "name": "onion"
+            },
+            {
+                "quantity": 1,
+                "unit": "slab",
+                "name": "butter"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "salt"
+            },
+            {
+                "quantity": 1,
+                "unit": "dash",
+                "name": "pepper"
+            }
+        ],
+        "steps": [
+            "peel and dice the onion. Dice broccoli bite-size pieces",
+            "heat the pan to medium heat",
+            "turn the oven on the broiler setting",
+            "add butter to pan to cover the bottom. Add onions and cook till translucent",
+            "add in the broccoli and cook until brown",
+            "in a seperate bowl mix: 6 eggs,dash of salt,pepper",
+            "pour the egg mixture over the cooked broccoli",
+            "gently place the pan in the top row of the oven ",
+            "Cook for about 6-7 minutes. Enjoy!"
+        ]
+    }
+]
+    
+//send the array as the response 
+    console.log ("getrecipes");
+   res.json(recipes);
+   
+
+});
+
+    app.post('/recipe/add', (req, res, next) => {
+        const recipe = req.body;
+        console.log(recipe.name + " " + recipe.description + " " + recipe.cuisine );
+        console.log(recipe)
+        //sent an acknowledgment back to caller 
+        res.status(201).json('Post successful');
+      });
+
+/* End requests to Recipes module */
 
 
 //to use this middleware in other parts of the application

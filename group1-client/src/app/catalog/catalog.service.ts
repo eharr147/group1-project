@@ -1,27 +1,31 @@
 import { Injectable } from '@angular/core';
 
-import {IRecipe} from '../shared/recipe'
-import demodata from 'src/assets/mock_recipes.json';
+import {IRecipe} from './recipe' // Manipulate Recipes in standard format
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 //import { MessageService } from '../message.service';
 
+//we know that response will be in JSON format
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class CatalogService {
 
-  //constructor(private messageService: MessageService) { }
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
- getRecipes(): Observable<IRecipe[]> {
-  // TODO: send the message _after_ fetching the heroes
-  //this.messageService.add('CatalogService: fetched recipes');
-  return of(demodata);
+  // Uses http.get() to load data 
+  getRecipes() {
+    return this.http.get('http://localhost:8000/catalog');
 }
-getRecipe(_id: number): Observable<IRecipe> {
-  // TODO: send the message _after_ fetching the hero
-  //this.messageService.add(`CatalogService: fetched recipe id=${_id}`);
-  return of(demodata.find(recipe => recipe._id === _id));
+
+
+getRecipe(_id: string) {
+  console.log('catalog.service.getRecipe - _id = ' + _id);
+  return this.http.get("http://localhost:8000/catalog/" + _id);
 }
+
 }

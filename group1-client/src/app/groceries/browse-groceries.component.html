@@ -1,3 +1,7 @@
+
 <app-navigation></app-navigation>
-<h1>browse-groceries initialized - Aswathy</h1>
-<app-under-construction></app-under-construction>
+<div>
+  <ul *ngFor ="let grocery of groceries let i = index">
+    <li> {{grocery.ingredient}}: {{grocery.quantity}} (index {{i}})</li>
+   </ul>
+</div>

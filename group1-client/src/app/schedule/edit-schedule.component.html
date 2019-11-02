@@ -11,11 +11,13 @@
             <div class="form-row">
                 <div class="col-xs-4 col-sm-4">
                     <label for="mealDate">Date:</label>
-                    <input type="date" class="form-control" id="mealDate" formControlName="mealDate" required>
+                    <input type="date" class="form-control" id="mealDate" formControlName="mealDate" 
+                     required>
                 </div>
                 <div class="col-xs-2 col-sm-2">
                     <label for ="mealTime">Meal Time:</label>
                     <select class="form-control" id="mealTime" formControlName="mealTime">
+                    
                       <option value="breakfast">Breakfast</option>
                       <option value="lunch">Lunch</option>
                       <option value="dinner">Dinner</option>
@@ -103,7 +105,7 @@
           <div class="row" style="padding: 20px">
             <div  style="padding-top: 20px">
                 <button class="btn btn-primary" type="submit" [disabled]="!scheduleForm.valid"
-                (click)="saveSchedule()">Add to my Schedule</button>
+                (click)="saveSchedule()">Save changes</button>
             </div>
             <div  style="padding: 20px 10px">
                 <button class="btn btn-secondary" type="cancel" (click)="onCancel()">Cancel</button>
@@ -114,14 +116,14 @@
         </form>
     </div>
 </div>
-
 <div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
+
 <h5>Form State</h5>
 <pre>{{scheduleForm.status}}</pre>
   <h5>Form Value</h5>
   <pre>{{scheduleForm.value | json}}</pre>
   <h5>Selections Value</h5>
   <pre>{{queueService.recipes | json}}</pre>
-  <h5>Saved schedule state</h5>
-  <pre>{{queueService.schedule | json}}</pre>
+  <h5>Edit schedule object</h5>
+  <pre>{{schedule | json}}</pre>
 

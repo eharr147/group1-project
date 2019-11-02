@@ -1,0 +1,23 @@
+
+<div id="accordion" class="accordion">
+    <div class="card mb-0">
+        <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+            <a class="card-title">
+               Comments and Feedback
+            </a>
+        </div>
+        <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
+              <ul *ngFor='let feedbacks of feedback'>
+                  <li><i>Comment by {{feedbacks.userId}} ({{feedbacks.firstname}})</i>
+                      <br/><br/>
+                    {{feedbacks.comments}}</li>
+                  
+              </ul>
+           
+        </div>
+    </div>
+</div>
+<!--
+<h5>raw data</h5>
+{{feedback | json}}
+-->
