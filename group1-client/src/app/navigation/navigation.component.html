@@ -15,9 +15,13 @@
                     <a class="nav-link" [routerLink]="['/welcome']">Home <span class="sr-only">(current)</span></a>
                   </li>
 
+                  <li class="nav-item active">
+                      <a class="nav-link" [routerLink]="['/catalog-browse']">Recipe Catalog <span class="sr-only">(current)</span></a>
+                    </li>
+
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuRecipe" role="button" 
-                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Recipes
+                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Contribute Recipes
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuRecipe">
                         <a class="dropdown-item" [routerLink]="['/recipes-create']">New Recipe</a>
@@ -29,9 +33,10 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Schedule
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuSchedule">
+                     <!-- <a class="dropdown-item" [routerLink]="['/catalog-browse']">Browse Recipes</a> -->
                       <a class="dropdown-item" [routerLink]="['/schedule-create']">Plan a Meal</a>
                       <a class="dropdown-item" [routerLink]="['/schedule-browse']">View my Schedule</a>
-                      <a class="dropdown-item" [routerLink]="['/catalog-browse']">Browse Recipes</a>
+
                     </div>
                   </li>
 
@@ -50,8 +55,8 @@
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Feedback
                       </a>
                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuFeedback">
-                        <a class="dropdown-item" [routerLink]="['/feedback-create']">Create Feedback</a>
-                        <a class="dropdown-item" [routerLink]="['/feedback-browse']">View all Feedback</a>
+                       <!-- <a class="dropdown-item" [routerLink]="['/feedback-create']">Create Feedback</a> -->
+                        <a class="dropdown-item" [routerLink]="['/feedback-browse']">My Feedback History</a>
                       </div>
                     </li>
  

@@ -1,2 +1,15 @@
-<h1>browse-recipe initialized - Harika</h1>
-<app-under-construction></app-under-construction>
+<app-navigation></app-navigation>
+<div class="spacer"></div>
+
+    <div>
+
+        <ul *ngFor ="let recipe of Recipes let i = index">
+        
+        <li> {{recipe.name}}: {{recipe.description}} {{recipe.cuisine}} (index 
+         {{i}})</li>
+        
+        </ul>
+        
+        </div>
+<!-- Toolbar -->
+<div>

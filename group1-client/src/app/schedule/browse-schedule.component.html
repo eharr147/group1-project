@@ -1,6 +1,8 @@
 <app-navigation></app-navigation>
+
 <div class="card">
     <div class="card-header">My Planned Meals</div>
+
     <div *ngIf='schedules && schedules.length == 0'>Nothing planned....</div>
     <div class="table-responsive">
         <table class="table" *ngIf='schedules && schedules.length > 0'>
@@ -15,12 +17,18 @@
               </thead>
               <tbody>
                   <tr *ngFor='let thisSchedule of schedules'>
-                    <td>{{thisSchedule.mealDate}}</td>
+                    <td>
+                      {{thisSchedule.mealDate.toString().split('T')[0] | date}} 
+
+                    </td>
                     <td>{{decodeMeal(thisSchedule.mealTime)}}</td>
                     <td><ul *ngFor ="let thisDish of thisSchedule.mealDishes let i = index">
                         <li> {{decodeDish(thisDish.dishType)}} : {{thisDish.recipeTitle}} </li>
                       </ul></td>
-                  <td><button class="btn btn-primary" (click)="editSchedule(thisSchedule._id);">Edit</button></td>
+                  <td><button class="btn btn-primary" [routerLink]="['/schedule-edit', thisSchedule._id]">Edit</button></td>
+                 <!--  <td><button class="btn btn-primary" (click)="editSchedule(thisSchedule._id);">Edit</button></td> -->
+                  
+
                   <td><button class="btn btn-danger" (click)="deleteSchedule(thisSchedule._id);">Delete</button></td>
                   </tr>
 
@@ -30,4 +38,5 @@
 
     </div> 
 </div>
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
 

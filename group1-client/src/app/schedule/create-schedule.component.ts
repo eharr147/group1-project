@@ -4,9 +4,16 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl,FormBuilder,Validators, FormArray } from '@angular/forms';
 import { Router, ActivatedRoute} from '@angular/router'
 import { QueueService} from '../catalog/queue.service'
-import { IRecipe } from '../shared/recipe';
+import { IRecipe } from '../catalog/recipe';
 import {ScheduleService} from '../schedule/schedule.service'
-import { ISchedule, IMealDish } from '../shared/schedule';
+import { ISchedule, IMealDish } from './schedule';
+
+// imports for authentication 
+import{Subscription} from 'rxjs';
+import{first} from 'rxjs/operators';
+import {User} from '../_models';
+import {UserService,AuthenticationService} from '../_services';
+// imports for authentication end 
 
 
 
@@ -17,22 +24,42 @@ import { ISchedule, IMealDish } from '../shared/schedule';
 })
 export class CreateScheduleComponent implements OnInit {
   title = "Plan a Meal"
+  message = ""
 
   scheduleForm: FormGroup 
+  schedule_id = ''
+
+  // authentication start
+  myUserId = '' /* Start with default value. Once we grab the authentuicated user, it will be replaced */
+  currentUser:User;
+  currentUserSubscription:Subscription;
+//authentication end
 
   constructor(private fb: FormBuilder,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               public queueService: QueueService,
-              private scheduleService: ScheduleService) {
-   }
-
+              private scheduleService: ScheduleService,
+    // authentication start
+    private authenticationService:AuthenticationService
+     ) { 
+   
+       this.currentUserSubscription=this.authenticationService.currentUser.subscribe(
+       user =>{
+         this.currentUser=user;
+       });
+       if (this.currentUser ) {
+         this.myUserId = this.currentUser.username
+       }
+     
+     } // authentication end
   ngOnInit() {
   /* Initialize arrays */
 
+  var today = new Date();
   
     this.scheduleForm=this.fb.group({
-    mealDate: [new Date(), Validators.required],
+    mealDate: [today, Validators.required],
     mealTime: ['dinner']  , 
     mealDishes: this.fb.array([]),
     
@@ -42,8 +69,15 @@ export class CreateScheduleComponent implements OnInit {
    
   })
 
-  /*this.scheduleForm.get('mealTime').setValue('dinner')*/
-  /*this.scheduleForm.get('mealTime').setValue(this.mealTimeOptions['2'])*/
+  //console.log(today)
+  //this.scheduleForm.get('mealDate').setValue(today)
+
+if (this.queueService.schedule != null && this.queueService.schedule_id == this.schedule_id) {
+  this.restoreState(this.queueService.schedule)
+ }
+ else {
+   this.queueService.clearState
+ }
   
   if (this.queueService.recipes.length==0) 
   {
@@ -63,6 +97,33 @@ export class CreateScheduleComponent implements OnInit {
 
   }
 
+restoreState(schedule) {
+      /* use split to remove the timestamp part from saved date */
+      this.scheduleForm.get('mealDate').setValue(schedule.mealDate.toString().split('T')[0]);
+      this.scheduleForm.get('mealTime').setValue(schedule.mealTime);
+
+      var j:any
+      for (j in schedule.mealNotes) {
+          this.addNote(schedule.mealNotes[j])
+      }
+}
+
+loadDishFromSchedule(dish: IMealDish) {
+  /*Creates a dish in the mealDishes form group from a the Schedule instance being edited in this component*/
+
+  console.log('loadDishFromSchedule called')
+  console.log(dish)
+
+
+  this.mealDishes.push(
+    this.fb.group({
+      dishType: [dish.dishType], 
+      recipeId: [dish.recipeId],
+      recipeTitle: [dish.recipeTitle],
+      recipeDesc: [dish.recipeDesc]})
+                )
+}
+
   // Getters and Setters
 
   // Used to populate the form. DO NOT delete 
@@ -78,6 +139,7 @@ export class CreateScheduleComponent implements OnInit {
   get scheduleObj() {
 
      let thisObj : ISchedule = {
+    userId: this.myUserId,
     mealDate : this.scheduleForm.get('mealDate').value,
     mealTime : this.scheduleForm.get('mealTime').value,
     //mealDishes : this.scheduleForm.controls.mealDishes.value,
@@ -91,9 +153,9 @@ export class CreateScheduleComponent implements OnInit {
   /* Getters and setters */
 
   /* addNote inserts a new instance in the array */
-  addNote() {
-    this.mealNotes.push(this.fb.control(''));
-   
+  addNote(pNote) {
+    this.mealNotes.push(this.fb.control(pNote));
+  
   }
   removeNote(noteIndex: number): void {
     (<FormArray>this.scheduleForm.get('mealNotes')).removeAt(noteIndex);
@@ -127,23 +189,37 @@ export class CreateScheduleComponent implements OnInit {
 
   goCatalog(): void {
     /* Navigates to Recipe Catalog to pick more recipes */
-      this.router.navigate(['/catalog-browse'])
+      /* save form state first.... so we can reload */ 
+      this.queueService.saveState(this.scheduleObj, this.schedule_id) // scheduleObj is a getter
+      this.router.navigate(['/catalog-browse/return'])
   }
 
+  goSchedules(): void {
+    /* Navigates to Schedule List */
+      this.router.navigate(['/schedule-browse'])
+  }
 
 saveSchedule() {
-  alert("This will eventually save schedule to MongoDb")
   
     console.log("You submitted: ");
     console.log(this.scheduleForm.value)
 
     //this.scheduleService.addSchedules(this.mealDate ,this.mealTimeKey, this.mealTimeValue);
     this.scheduleService.addSchedule(this.scheduleObj);
-  
+    this.queueService.clear(); /* clear selected recipes */
+    //this.scheduleForm.reset();
+    this.message="Schedule entry saved. Going back to your schedule list."
+    alert(this.message)
+    this.router.navigate(['/schedule-browse'])
+ 
   }
 
 onCancel(): void {
-  alert('This will now take you back to the Welcome page. Later we will reset the form.')
-  this.router.navigate(['/welcome'])
+  this.scheduleForm.reset();
+  this.queueService.clear(); /* clear selected recipes */
+  alert("Operation cancelled. Schedule entry has been cancelled.")
+  //location.reload
+  this.router.navigate(['/schedule-browse']  )
 }
+
 }

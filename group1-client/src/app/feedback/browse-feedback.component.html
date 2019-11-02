@@ -1,3 +1,31 @@
 <app-navigation></app-navigation>
-<h1>browse-feedback initialized - Elizabeth</h1>
-<app-under-construction></app-under-construction>
+<div class="card">
+    <div class="card-header">My Feedbacks</div>
+    <div *ngIf='feedbackhistory && feedbackhistory.length == 0'>You haven't submitted any feedbacks....</div>
+    <div class="table-responsive">
+        <table class="table" *ngIf='feedbackhistory && feedbackhistory.length > 0'>
+            <thead class="thead-light">
+                <tr>
+                  <th scope="col">FirstName</th>
+                  <th scope="col">Lastname</th>
+                  <th scope="col">Recipe</th>
+                  <th scope="col">Comments</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor='let feedbacks of feedbackhistory'>
+                    <td>{{feedbacks.firstname}}</td>
+                    <td>{{feedbacks.Lastname}}</td>
+                    <td>{{feedbacks.recipeTitle}}</td>
+                    <td>{{feedbacks.comments}}</td>
+                  <td><button class="btn btn-primary" (click)="editFeedback(feedbacks._id,feedbacks.Recipeno,feedbacks.firstname,feedbacks.Lastname,feedbacks.comments);">Edit</button></td>
+                  <td><button class="btn btn-danger" (click)="deleteFeedback(feedbacks._id);">Delete</button></td>
+                  </tr>
+
+              </tbody>
+        </table>
+
+
+    </div> 
+</div>

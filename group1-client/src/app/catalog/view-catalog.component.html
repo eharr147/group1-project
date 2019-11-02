@@ -1,0 +1,50 @@
+<app-navigation></app-navigation>
+<div *ngIf="recipe" class="card">
+        <h5 class="card-header">{{this.recipe.name}}</h5>
+        <div class="card-body">
+          <h5 class="card-title">{{this.recipe.description}}</h5>
+        <h2>Ingredients</h2>
+
+          <div class="table-responsive">
+            <table class="table">
+  
+               <thead class="thead-light">
+                    <tr>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Unit</th>
+                      <th scope="col">Name</th>
+
+                    </tr>
+                  </thead>
+  
+                  <tbody>
+                    <tr *ngFor='let thisIngredient of recipe.ingredients'>
+
+                              <td>{{thisIngredient.quantity}}</td>
+                              <td>{{thisIngredient.unit}}</td>
+                              <td>{{thisIngredient.name}}</td>
+                    </tr>
+                  </tbody>
+            </table>
+
+            <h2>Preparation Steps</h2>
+
+            <div class="table-responsive">
+              <table class="table">
+    
+ 
+                    <tbody>
+                      <tr *ngFor='let thisStep of recipe.steps'>
+                                  <td>{{thisStep}}</td>
+                      </tr>
+                    </tbody>
+              </table>
+          <app-list-feedback Recipeno={{this.recipe._id}}></app-list-feedback>
+          <button class="btn btn-primary" (click)="goBack();">Back</button>
+          <button class="btn btn-primary" (click)="addFeedback(this.recipe._id, this.recipe.name);">Add Feedback</button>
+        </div>
+        
+</div>
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
+<div>Recipe Id is {{this.recipe._id}}</div>
+<div>Recipe name is {{this.recipe.name}}</div>

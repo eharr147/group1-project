@@ -1,61 +1,40 @@
 <app-navigation></app-navigation>
-<h1>create-feedback under development - Elizabeth</h1>
+<div class="card">
+    <div class="card-header text-center">
+      <h1>{{this.title}}</h1>
+    </div>
+</div>
 
-<form [formGroup]="feedbackform" (ngSubmit)="onSubmit()">
-    <table>
+<div class="card-body">
+    <div class="container-fluid">
+        
+  
+<form [formGroup]="feedbackform" >
+    <h2>{{this.recipeTitle}}</h2>
+    <small>Commenting as {{currentUser.firstName}} {{currentUser.lastName}}, username {{myUserId}}</small>
+    <table >
         <tr>
             <td>
-            <label>
-                    First Name:
-                   
-                </label>
-                
+                    <label for="comments">Comments:</label>
             </td>
             <td>
-                    
-                    <input type="text" formControlName="firstname">
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>
-                    Last Name:
-                </label>
-            </td>
-            <td>
-                <input type="text" fromControlName="lastname">
-            </td>
-        </tr>
-        <tr>
-            <td>
-
-                    <label>
-                            Recipe No:
-                            
-                    
-                        </label>
-            </td>
-            <td>
-                  <input type="text" formControlName="Recipeno">
-            </td>
-           
-        </tr>
-        <tr>
-            <td>
-                <label>Comments:</label>
-            </td>
-            <td>
-                    <textarea formControlName="comments" cols="40" rows="5"></textarea>
+                    <textarea class="form-control" cols="40" rows="5" formControlName="comments" ngModel="{{Comments}}" id="comments"></textarea>
             </td>
         </tr>
         <tr>
             <td colspan="3" align="center">
-                    <button type="submit">Submit Feedback</button>
+                    <button class="btn btn-primary"  type="button" [disabled]="!feedbackform.valid" (click)="onSubmit();">Submit Feedback</button>
+                    <!-- <a [routerLink]="['/welcome']" class="btn btn-link">Cancel</a> -->
+                    <button class="btn btn-secondary" (click)="goBack();">Back</button>
             </td>
         </tr>
     </table>
+    
 </form>
-
+</div>
+</div>
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
+<div>Recipe Id is {{this.recipeId}}</div>
 <h5>Value</h5>
 <p>
   Form Status: {{ feedbackform.status }}

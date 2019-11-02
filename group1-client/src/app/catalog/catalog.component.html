@@ -3,11 +3,16 @@
     <div class="card-header">
         <div class="row" style="padding-top: 20px">
           <div class="align-self-start col-xs-4 col-sm-4">Browse our delicious recipes</div>
-          <div class="align-self-center col-xs-4 col-sm-4">
-            <button class="btn btn-outline-light" (click)="goSchedule();">Add to New Plan</button>
+          <div class="align-self-center col-xs-3 col-sm-3">
+            <button class="btn btn-outline-light" [disabled]="showBackButton" (click)="goSchedule();">Add to New Plan</button>
           </div>
-          <div class="align-self-end col-xs-4 col-sm-4">
-            <button class="btn btn-outline-light" (click)="goScheduleBrowse();">Add to Existing Plan</button>
+          <!-- Remove this option - causes navigation and cache issues 
+          <div class="align-self-center col-xs-3 col-sm-3">
+            <button class="btn btn-outline-light" [disabled]="showBackButton" (click)="goScheduleBrowse();">Add to Existing Plan</button>
+          </div>
+          -->
+          <div *ngIf="showBackButton" class="align-self-end col-xs-2 col-sm-2">
+            <button class="btn btn-outline-light" (click)="goBack();">Finish & Return</button>
           </div>
         </div>
       </div>
@@ -47,45 +52,40 @@
     </div>
       <div class="table-responsive">
           <table class="table" *ngIf='recipes && recipes.length > 0'>
-              <thead class="thead-light">
+
+             <thead class="thead-light">
                   <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Meal</th>
                     <th scope="col">Use as</th>
                     <th scope="col">Calories</th>
+                    <th scope="col">Cuisine</th>
                     <th scope="col"></th>
                   </tr>
                 </thead>
-                <tbody>
-                    <tr *ngFor='let thisRecipe of filteredRecipes'>
-                      <td>{{thisRecipe.name}}</td>
-                      <td>{{thisRecipe.description}}</td>
-                      <td>{{thisRecipe.meal}}</td>
-                      <td>{{thisRecipe.usage}}</td>
-                      <td>{{thisRecipe.calories}}</td>
-                      <td>
-                          <div class="btn-group mr-2">
-                              <button class="btn btn-primary" (click)="addSelection(thisRecipe._id);">Select</button>
-                              <button class="btn btn-success" (click)="addSelectionAndFinish(thisRecipe._id);">Quick Plan</button>
-                            </div>
-                      </td>
-                    </tr>
 
+                <tbody>
+                  <tr *ngFor='let thisRecipe of filteredRecipes'>
+                            <td><a [routerLink]="['/catalog-view/',thisRecipe._id]">{{thisRecipe.name}}</a></td>
+                            <td>{{thisRecipe.description}}</td>
+                            <td>{{thisRecipe.usage}}</td>
+                            <td>{{thisRecipe.calories}}</td>
+                            <td>{{thisRecipe.cuisine}}</td>
+                            <td>
+                                <div class="btn-group mr-2">
+                                    <button class="btn btn-primary" (click)="addSelection(thisRecipe._id);">Select</button>
+                                    <button *ngIf="!showBackButton" class="btn btn-success" (click)="addSelectionAndNew(thisRecipe._id);">Quick Plan</button>
+                                    <button *ngIf="showBackButton" class="btn btn-success" (click)="addSelectionAndFinish(thisRecipe._id);">Select & Return</button>
+                                    <button class="btn btn-primary" (click)="viewSelection(thisRecipe._id);">Detail</button>
+                                    <button class="btn btn-primary" (click)="addFeedback(thisRecipe._id, thisRecipe.name);">Add Feedback</button>
+
+                                  </div>
+                            </td>
+                  </tr>
                 </tbody>
           </table>
 
 
 </div>
-<!--
-<ul>
-  <li *ngFor="let recipe of recipes">
-      {{recipe.name}}
- 
-    <a routerLink="/detail/{{hero.id}}">
-      <span class="badge">{{hero.id}}</span> {{hero.name}}
-    </a>
- 
-  </li>
-</ul>
--->
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
+
