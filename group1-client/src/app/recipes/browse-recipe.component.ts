@@ -33,5 +33,7 @@ export class BrowseRecipeComponent implements OnInit {
     
     }
     
-     
+    onDelete(recipeId: string) {
+      this._myService.deleteRecipe(recipeId);
+    } 
 }

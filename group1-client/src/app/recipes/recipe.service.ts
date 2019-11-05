@@ -22,7 +22,13 @@ getRecipes() {
 return this.http.get('http://localhost:8000/recipes');
 
 }
-
+deleteRecipe(recipeId: string) {
+  this.http.delete("http://localhost:8000/recipes/" + recipeId)
+    .subscribe(() => {
+        console.log('Deleted: ' + recipeId);
+    });
+    location.reload();
+}
    // Uses http.post() to post data 
   addRecipes(name: string, description: string, cuisine: string,
     usage, effort_lvl, contributor, servings, calories
@@ -37,3 +43,6 @@ return this.http.get('http://localhost:8000/recipes');
    }); 
 }
 }
+
+
+
