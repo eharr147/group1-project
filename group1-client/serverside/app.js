@@ -13,7 +13,8 @@ const Recipe = require('./models/recipe')
 
 // connect and display the status 
 //mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
-mongoose.connect('mongodb+srv://IT6203User:IT6203KSU@cluster0-chkhb.azure.mongodb.net/dbIT6203?retryWrites=true&w=majority', { useNewUrlParser: true })
+//mongoose.connect('mongodb+srv://IT6203User:IT6203KSU@cluster0-chkhb.azure.mongodb.net/dbIT6203?retryWrites=true&w=majority', { useNewUrlParser: true })
+mongoose.connect('mongodb+srv://egladsto:IT6203project@group1-project-hshbd.mongodb.net/dbIT6203?retryWrites=true&w=majority', { useNewUrlParser: true })
 
   .then(() => { console.log("connected"); })
   .catch(() => { console.log("error connecting"); });
