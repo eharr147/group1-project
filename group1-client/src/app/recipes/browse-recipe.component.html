@@ -1,15 +1,14 @@
 <app-navigation></app-navigation>
-<div class="spacer"></div>
+<div class="spacer">
 
     <div>
 
         <ul *ngFor ="let recipe of Recipes let i = index">
         
-        <li> {{recipe.name}}: {{recipe.description}} {{recipe.cuisine}} (index 
-         {{i}})</li>
-        
+        <li> {{recipe.name}}: {{recipe.description}} {{recipe.cuisine}} 
+         <button class="btn btn-primary" (click)="onDelete(recipe._id)">DELETE</button></li>
         </ul>
         
         </div>
-<!-- Toolbar -->
+
 <div>

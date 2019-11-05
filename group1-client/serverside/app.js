@@ -9,9 +9,12 @@ const Schedule = require('./models/schedule')
 const Catalog = require('./models/recipe')
 const feedbacks=require('./models/feedbackhistory');
 const users=require('./models/Users');
+const Recipe = require('./models/recipe')
 
 // connect and display the status 
-mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
+//mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
+mongoose.connect('mongodb+srv://IT6203User:IT6203KSU@cluster0-chkhb.azure.mongodb.net/dbIT6203?retryWrites=true&w=majority', { useNewUrlParser: true })
+
   .then(() => { console.log("connected"); })
   .catch(() => { console.log("error connecting"); });
 
@@ -390,137 +393,55 @@ app.get('/feedback/user/:userId', (req, res, next) => {
   
 /* Requests to Recipes module */
 app.get('/recipes', (req, res, next) => {
-  const recipes = [ 
-    {
-        "name": "Banana Pancakes",
-        "description": "A favorite breakfast item. Or dinner too!",
-        "cuisine":"american",
-        "usage":"breakfast",
-        "effort_lvl":"easy",
-        "contributor":"chef",
-        "servings":2,
-        "calories":325,
-        
-        "ingredients": [
-            {
-                "quantity": 2,
-                "unit": "cups",
-                "name": "bananas"
-            },
-            {
-                "quantity": 5,
-                "unit": "whole pieces",
-                "name": "strawberries"
-            },
-            {
-                "quantity": 8,
-                "unit": "pieces",
-                "name": "blueberries"
-            },
-            {
-                "quantity": 0.5,
-                "unit": "cups",
-                "name": "milk"
-            },
-            {
-                "quantity": 1,
-                "unit": "tbsp",
-                "name": "butter"
-            },
-            {
-                "quantity": 1,
-                "unit": "dash",
-                "name": "cinnamon"
-            },
-            {
-                "quantity": "1.4 ",
-                "unit": "cup",
-                "name": "oats"
-            }
-        ],
-        "steps": [
-            "Wash and cut the fruit pieces",
-            "Add banana,blueberries,milk,oats, and cinnamon to a blender to: Puree",
-            "Heat the pan and add a teaspoon of butter",
-            "pour 1/4 cup of mixture into medium heat pan",
-            "cook until brown: about 2-3 minutes on each side",
-            "serve with slices of strawberries"
-        ]
-    },
-    {
-        "name": "Brocolli Fritata",
-        "description": "Classic Spanish dish.",
-        "cuisine":"spain",
-        "usage":"main",
-        "effort_lvl":"easy",
-        "contributor":"chef",
-        "servings":3,
-        "calories":425,
-        "ingredients": [
-            {
-                "quantity": 2,
-                "unit": "crowns",
-                "name": " Broccoli"
-            },
-            {
-                "quantity": 0.5,
-                "unit": "cups",
-                "name": "Grated chedar cheese"
-            },
-            {
-                "quantity": 6,
-                "unit": "whole",
-                "name": "eggs"
-            },
-            {
-                "quantity": 0.5,
-                "unit": "cups",
-                "name": "onion"
-            },
-            {
-                "quantity": 1,
-                "unit": "slab",
-                "name": "butter"
-            },
-            {
-                "quantity": 1,
-                "unit": "dash",
-                "name": "salt"
-            },
-            {
-                "quantity": 1,
-                "unit": "dash",
-                "name": "pepper"
-            }
-        ],
-        "steps": [
-            "peel and dice the onion. Dice broccoli bite-size pieces",
-            "heat the pan to medium heat",
-            "turn the oven on the broiler setting",
-            "add butter to pan to cover the bottom. Add onions and cook till translucent",
-            "add in the broccoli and cook until brown",
-            "in a seperate bowl mix: 6 eggs,dash of salt,pepper",
-            "pour the egg mixture over the cooked broccoli",
-            "gently place the pan in the top row of the oven ",
-            "Cook for about 6-7 minutes. Enjoy!"
-        ]
-    }
-]
-    
-//send the array as the response 
-    console.log ("getrecipes");
-   res.json(recipes);
+  //call mongoose method find (MongoDB db.Students.find())
+ Recipe.find() 
+   //if data is returned, send data as a response 
+   .then(data => res.status(200).json(data))
+   //if error, send internal server error
+   .catch(err => {
+   console.log('Error: ${err}');
+   res.status(500).json(err);
+ });
    
-
+//send the array as the response 
+   console.log ("getrecipes");
 });
+//:id is a dynamic parameter that will be extracted from the URL
+app.delete("/recipes/:id", (req, res, next) => {
+   Recipe.deleteOne({ _id: req.params.id }).then(result => {
+     console.log(result);
+     res.status(200).json("Deleted!");
+   });
+ });
 
-    app.post('/recipe/add', (req, res, next) => {
-        const recipe = req.body;
-        console.log(recipe.name + " " + recipe.description + " " + recipe.cuisine );
-        console.log(recipe)
-        //sent an acknowledgment back to caller 
-        res.status(201).json('Post successful');
-      });
+app.post('/recipe/add', (req, res, next) => {
+       // create a new student variable and save request’s fields 
+ console.log('recipe/add called')
+ console.log(req.body)
+ const recipe = new Recipe({
+   name: req.body.name,
+   description: req.body.description,
+   cuisine: req.body.cuisine,
+   usage: req.body.usage,
+   effort_lvl: req.body.effort_lvl,
+   contributor: req.body.contributor,
+   servings: req.body.servings,
+   calories: req.body.calories,
+   ingredients: req.body.ingredients,
+   steps: req.body.steps 
+ });
+ //send the document to the database 
+ recipe.save()
+   //in case of success
+   .then(() => { console.log('Success');
+   res.status(201).json({'recipe': 'recipe added successfully'});  
+  })
+   //if error
+   .catch(err => {console.log('Error:' + err);
+   res.status(400).send("recipe/add - unable to save to database")
+  });
+     });
+
 
 /* End requests to Recipes module */
 

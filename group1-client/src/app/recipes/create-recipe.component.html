@@ -1,6 +1,6 @@
-<app-navigation></app-navigation>
-<div> 
-    <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+ <app-navigation></app-navigation>
+ <div>
+ <form [formGroup]="recipeForm">
     
     <label>
       Recipe Name:
@@ -30,11 +30,6 @@
       <label>
         Effort Level
         <input class="form-control" type="text" formControlName="effort_lvl">
-      </label>
-
-      <label>
-        Contributor
-        <input class="form-control" type="text" formControlName="contributor">
       </label>
 
       <label>
@@ -80,7 +75,7 @@
        
     </div>
 
-       <input class="btn btn-primary" type = "submit" id = "submit" value = "submit"/>
+       <button class="btn btn-primary"  (click)="onSubmit()">Save Recipe</button>
 
 
 </form>
