@@ -15,11 +15,18 @@ export class BrowseGroceriesComponent implements OnInit {
 //method called OnInit
 getGroceries() {
    this._myService.getGroceries().subscribe(
-//read data and assign to public variable groceries
+//read data and assign to public variable students
       data => { this.groceries = data},
       err => console.error(err),
       () => console.log('finished loading')
     );
   }
+  deleteGrocery(id: string) {
+   
+    console.log('This will delete ingredient'+ id);
+    alert('This will delete schedule entry '+ id)
+    this._myService.deleteGrocery(id);
+   
+}
 
 }

@@ -10,12 +10,21 @@ const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/jso
     // Uses http.get() to load data 
         getGroceries() {
             return this.http.get('http://localhost:8000/groceries');
+            location.reload();
         }
         createGroceryList(ingredient: string, quantity: string) {
             this.http.post('http://localhost:8000/groceries',{ ingredient, quantity })
           .subscribe((responseData) => {
              console.log(responseData);
            }); 
+           location.reload();
     }
-    
+    deleteGrocery(id: string) {
+        console.log('About to Delete: ' + id);
+        this.http.delete("http://localhost:8000/groceries/"+id)
+          .subscribe(() => {   
+              console.log('Deleted: ' + id);
+          });  
+          location.reload();        
+      }
     }
