@@ -10,6 +10,7 @@ const Catalog = require('./models/recipe')
 const feedbacks=require('./models/feedbackhistory');
 const users=require('./models/Users');
 const Recipe = require('./models/recipe')
+const Grocery = require('././models/grocery');
 
 // connect and display the status 
 //mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
@@ -44,6 +45,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
+
+
+/****************************************
+ *    SCHEDULE  
+ *     
+ ***************************************/
 
 
 /* Requests for schedule module*/
@@ -187,6 +194,11 @@ app.get('/schedules', (req, res, next) => {
  
    
   /*  End of requests to schedules */ 
+
+  /*******************************
+   *      CATALOG
+   * 
+   ********************************/
   
  /* Requests to Recipes via Catalog module */
  app.get('/catalog', (req, res, next) => {
@@ -226,23 +238,62 @@ app.get('/schedules', (req, res, next) => {
  
  
  /* End of requests to Catalog */ 
-  
+ 
+ /****************************************
+  * GROCERIES
+  * **************************************/
+
 /* Requests for Grocery module */
 app.get('/groceries',(req, res, next) => {
-   const groceries=[{"ingredient":"Lettuce","quantity":"1"},
-                    {"ingredient":"Tomato","quantity":"2"}];
- res.json(groceries);
+  Grocery.find()
+    //if data is returned, send data as a response 
+    .then(data => res.status(200).json(data))
+    //if error, send internal server error
+    .catch(err => {
+    console.log('Error: ${err}');
+    res.status(500).json(err);
+  });
 });
 
-app.post('/groceries', (req, res, next) => {
-   const grocery = req.body;
-   console.log(grocery.ingredient + " " + grocery.quantity);
- //sent an acknowledgment back to caller 
-   res.status(201).json('Post successful');
- })
+
+app.post('/groceries', (req, res, next) => 
+{const grocery = new Grocery({
+  ingredient: req.body.ingredient,
+  quantity: req.body.quantity  
+});
+ 
+//send the document to the database 
+grocery.save()
+  //success
+  .then(() => { 
+    console.log('Success');
+    console.log(grocery.ingredient + " " + grocery.quantity);
+    res.status(201).json('Post successful');        
+   })
+  //if error
+  .catch(err => {
+    console.log('Error:' + err);
+    res.status(400).json('Post not successful');    
+   });
+/*  const grocery = req.body;
+  console.log(grocery.ingredient + " " + grocery.quantity);
+//sent an acknowledgment back to caller 
+  res.status(201).json('Post successful');*/
+  
+})
+
+app.delete('/groceries/:id', (req, res, next) => {
+ Grocery.deleteOne({ _id: req.params.id }).then(result => {
+   console.log(result);
+   res.status(200).json("Deleted!");
+ });
+});
 
 /*  End of requests to Grocery module */ 
-
+/************************************
+ * FEEDBACK
+ * 
+ ************************************/
   /* Feedback History*/
   app.get('/feedbackhistory', (req, res, next) => {
     /* Serve mock data in JSON file */
@@ -351,6 +402,10 @@ app.get('/feedback/user/:userId', (req, res, next) => {
   });
  /* end requests Feedback History */
  
+ /************************************
+  *    USER LOGIN AND REGISTRATION
+  * 
+  ***********************************/
   /* User Login and Registration*/
   app.get("/users/authenticate/:username/:password", (req, res, next) => {
    
@@ -391,7 +446,12 @@ app.get('/feedback/user/:userId', (req, res, next) => {
     res.status(201).json('Post successful');
   });
 /* end requests User/authentication */
-  
+
+/********************************************
+ * RECIPES
+ * 
+ ********************************************/
+
 /* Requests to Recipes module */
 app.get('/recipes', (req, res, next) => {
   //call mongoose method find (MongoDB db.Students.find())

@@ -2,6 +2,9 @@
 <app-navigation></app-navigation>
 <div>
   <ul *ngFor ="let grocery of groceries let i = index">
-    <li> {{grocery.ingredient}}: {{grocery.quantity}} (index {{i}})</li>
+    <li> {{grocery.ingredient}}: {{grocery.quantity}} (index {{i}})
+      <button mat-button color="warn" (click)="deleteGrocery(grocery._id);">DELETE</button>
+  
+    </li>
    </ul>
 </div>
