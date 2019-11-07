@@ -9,15 +9,15 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getAll() {
-        return this.http.get<User[]>(`/users`);
+        return this.http.get<User[]>(`http://localhost:8000/users`);
     }
 
     getById(id: number) {
-        return this.http.get(`/users/${id}`);
+        return this.http.get(`http://localhost:8000/users/${id}`);
     }
 
-    register(user: User) {
-        return this.http.post(`/users/register`, user);
+    register(firstname:string,lastName:string,username:string,password:string) {
+        return this.http.post(`http://localhost:8000/users/register`, {firstname,lastName,username,password});
     }
 
     update(user: User) {

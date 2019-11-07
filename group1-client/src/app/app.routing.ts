@@ -55,7 +55,7 @@ const appRoutes: Routes = [
     {path: 'groceries-browse', component: BrowseGroceriesComponent},
     {path: 'groceries-create', component: CreateGroceriesComponent},
     /* 404 and redirection */
-    {path: 'welcome', component: WelcomeComponent, canActivate: [AuthGuard]},
+    {path: 'welcome', component: WelcomeComponent , canActivate: [AuthGuard]},
       {path: '', redirectTo: 'welcome', pathMatch: 'full'},
     {path: '**', component: PageNotFoundComponent},
     // otherwise redirect to home

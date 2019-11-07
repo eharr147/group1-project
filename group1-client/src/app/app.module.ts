@@ -80,7 +80,7 @@ import { fakeBackendProvider } from './_helpers';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
-fakeBackendProvider,
+//fakeBackendProvider,
 //UserService, AuthenticationService,
 CatalogService,QueueService, ScheduleService,
 GroceryService,
