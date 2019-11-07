@@ -52,7 +52,7 @@ onSubmit(){
   }
 
   this.loading=true;
-  this.userService.register(this.registerForm.value)
+  this.userService.register(this.registerForm.controls.firstName.value,this.registerForm.controls.lastName.value,this.registerForm.controls.username.value,this.registerForm.controls.password.value)
   .pipe(first())
   .subscribe(
 

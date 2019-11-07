@@ -8,9 +8,9 @@ const mongoose = require('mongoose');
 const Schedule = require('./models/schedule')
 const Catalog = require('./models/recipe')
 const feedbacks=require('./models/feedbackhistory');
-const users=require('./models/Users');
 const Recipe = require('./models/recipe')
 const Grocery = require('././models/grocery');
+const users=require('./models/Users');
 
 // connect and display the status 
 //mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
@@ -327,7 +327,6 @@ app.get('/feedback/user/:userId', (req, res, next) => {
 });
 
 
-
   //Get Feedback by RecipeID
  app.get("/feedback/find/:Recipeno",(req,res,next)=>{
    console.log('feedback/find/recipeNo')
@@ -407,29 +406,46 @@ app.get('/feedback/user/:userId', (req, res, next) => {
   * 
   ***********************************/
   /* User Login and Registration*/
+
   app.get("/users/authenticate/:username/:password", (req, res, next) => {
-   
-     users.find({username:req.params.username}).then(result=>{
-     console.log(result);
-     res.status(200).json(result);
-   });
   
-   
+    users.find({username:req.params.username,password:req.params.password})
+    .then(result=>{
+      const user = {
+      
+        username: result[0].username,
+        firstName: result[0].Firstname,
+        lastName: result[0].Lastname
+        
+    }
+    console.log(user);
+    res.status(200).json(user);
+
+  })
+  .catch(err => {
+    console.log('Authentication Error: ${err}');
+    userFriendlyMsg='Cannot authenticate userid/password.'
+    console.log(userFriendlyMsg)
+    res.status(500).json(userFriendlyMsg);
   });
  
+  
+ });
+
   app.get("/users",(req,res,next)=>{
-    console('users find called')
+   
    users.find().then(data=>res.status(200).json(data))
    .catch(err=>{
      console.log('Error: ${err}');
      res.status(500).json(err);
   });
  });
+
   app.post('/Users/register', (req, res, next) => {
    // const feedback = req.body;
    const userrecord=new users({
-     Firstname:req.body.Firstname,
-     Lastname:req.body.Lastname,
+     Firstname:req.body.firstname,
+     Lastname:req.body.lastName,
      username:req.body.username,
      password:req.body.password
    });
@@ -445,7 +461,8 @@ app.get('/feedback/user/:userId', (req, res, next) => {
  
     res.status(201).json('Post successful');
   });
-/* end requests User/authentication */
+
+  /* end requests User/authentication */
 
 /********************************************
  * RECIPES
