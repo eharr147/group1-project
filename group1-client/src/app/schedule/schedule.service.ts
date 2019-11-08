@@ -35,13 +35,24 @@ export class ScheduleService {
       // Uses http.post() to post data 
 
   addSchedule(scheduleObj: ISchedule) {
+    return this.http.post('http://localhost:8000/schedule/add',scheduleObj)
+  }
+
+  /* old code - moving subscribe up the call stack
+  addSchedule(scheduleObj: ISchedule) {
     this.http.post('http://localhost:8000/schedule/add',scheduleObj)
   .subscribe((responseData) => {
      console.log(responseData);
 
    }); 
   }
+*/
 
+  updateSchedule(_id: string,scheduleObj: ISchedule) {
+    return this.http.put('http://localhost:8000/schedule/update/'+ _id,scheduleObj)
+   } 
+
+/*
   updateSchedule(_id: string,scheduleObj: ISchedule) {
     this.http.put('http://localhost:8000/schedule/update/'+ _id,scheduleObj)
   .subscribe((responseData) => {
@@ -49,18 +60,24 @@ export class ScheduleService {
 
    }); 
   }
-
+*/
  
+
+  deleteSchedule(_id: string) {
+    console.log('schedule.service.deleteSchedule - _id = ' + _id)
+    return this.http.delete("http://localhost:8000/schedules/" + _id)
+  }
+
+ /*
   deleteSchedule(_id: string) {
     console.log('schedule.service.deleteSchedule - _id = ' + _id)
     this.http.delete("http://localhost:8000/schedules/" + _id)
       .subscribe(() => {
           console.log('Deleted: ' + _id);
       });
+
   }
-
-
-
+*/
 }
 
 

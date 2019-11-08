@@ -14,6 +14,8 @@ import{first} from 'rxjs/operators';
 import {User} from '../_models';
 import {UserService,AuthenticationService} from '../_services';
 // imports for authentication end 
+import {AlertService} from '../_services';
+
 
 @Component({
   selector: 'app-edit-schedule',
@@ -40,6 +42,7 @@ export class EditScheduleComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               public queueService: QueueService,
               private scheduleService: ScheduleService,
+              private alertService:AlertService,
               private authenticationService:AuthenticationService) {
                 this.currentUserSubscription=this.authenticationService.currentUser.subscribe(
                   user =>{
@@ -261,12 +264,25 @@ saveSchedule() {
     console.log(this.scheduleForm.value)
 
 
-    this.scheduleService.updateSchedule(this.schedule_id, this.scheduleObj);
-    this.queueService.clear(); /* clear selected recipes */
+    this.scheduleService.updateSchedule(this.schedule_id, this.scheduleObj).subscribe(
+
+      data =>{
+        this.alertService.success('Schedule entry updated!',false);
+               
+      },
+      error=>{
+        this.alertService.error(error);
+       
+      });
+
+
+    //this.queueService.clear(); /* clear selected recipes */
+    //this.ngOnInit();
+
     //this.scheduleForm.reset();
-    this.message="Schedule entry saved. Going back to your schedule list."
-    alert(this.message)
-    this.router.navigate(['/schedule-browse'])
+    //this.message="Schedule entry saved. Going back to your schedule list."
+    //alert(this.message)
+    //this.router.navigate(['/schedule-browse'])
  
   }
 

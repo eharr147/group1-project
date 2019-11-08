@@ -5,8 +5,8 @@
 
     <div *ngIf='schedules && schedules.length == 0'>Nothing planned....</div>
     <div class="table-responsive">
-        <table class="table" *ngIf='schedules && schedules.length > 0'>
-            <thead class="thead-light">
+        <table  id="schedules" class="table" *ngIf='schedules && schedules.length > 0'>
+            <thead class="thead-light"> 
                 <tr>
                   <th scope="col">Date</th>
                   <th scope="col">Meal</th>
@@ -15,8 +15,8 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                  <tr *ngFor='let thisSchedule of schedules'>
+              <tbody >
+                  <tr *ngFor='let thisSchedule of schedules; let i=index'>
                     <td>
                       {{thisSchedule.mealDate.toString().split('T')[0] | date}} 
 
@@ -29,7 +29,7 @@
                  <!--  <td><button class="btn btn-primary" (click)="editSchedule(thisSchedule._id);">Edit</button></td> -->
                   
 
-                  <td><button class="btn btn-danger" (click)="deleteSchedule(thisSchedule._id);">Delete</button></td>
+                  <td><button class="btn btn-danger" (click)="deleteSchedule(thisSchedule._id,i);">Delete</button></td>
                   </tr>
 
               </tbody>
@@ -38,5 +38,6 @@
 
     </div> 
 </div>
+<!--
 <div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
-
+-->

@@ -11,6 +11,7 @@ import{first} from 'rxjs/operators';
 import {User} from '../_models';
 import {UserService,AuthenticationService} from '../_services';
 // imports for authentication end 
+import {AlertService} from '../_services';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class BrowseScheduleComponent implements OnInit {
   constructor(private _myService: ScheduleService,
     private router: Router,
     public queueService: QueueService,
+    private alertService:AlertService,
     // authentication start
     private authenticationService:AuthenticationService
      ) { 
@@ -67,10 +69,22 @@ export class BrowseScheduleComponent implements OnInit {
        );
      }
    
-    deleteSchedule(_id: string) {
-      alert('This will delete schedule entry '+ _id)
-      this._myService.deleteSchedule(_id);
-      location.reload()
+    deleteSchedule(_id: string, rowId) {
+      this._myService.deleteSchedule(_id)
+
+      this._myService.deleteSchedule(_id).subscribe(
+        data => { this.alertService.success('Schedule entry deleted!',false);
+        // delete TR from the DOM
+        let table = document.querySelector('table');
+        table.deleteRow(rowId); 
+        location.reload
+       
+        },
+        error => {this.alertService.error(error);
+        console.error(error)},
+        () => console.log('finished deleting schedules')
+      );
+
   }
 
   createSchedule() {

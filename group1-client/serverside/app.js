@@ -204,7 +204,7 @@ app.get('/schedules', (req, res, next) => {
  app.get('/catalog', (req, res, next) => {
  
    //call mongoose method find 
-  Catalog.find() 
+  Catalog.find().sort('name')  
   //if data is returned, send data as a response 
   .then(data => res.status(200).json(data))
   //if error, send internal server error
