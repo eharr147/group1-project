@@ -62,13 +62,13 @@ export class ScheduleService {
   }
 */
  
-
+/*
   deleteSchedule(_id: string) {
     console.log('schedule.service.deleteSchedule - _id = ' + _id)
     return this.http.delete("http://localhost:8000/schedules/" + _id)
   }
-
- /*
+*/
+ 
   deleteSchedule(_id: string) {
     console.log('schedule.service.deleteSchedule - _id = ' + _id)
     this.http.delete("http://localhost:8000/schedules/" + _id)
@@ -77,7 +77,7 @@ export class ScheduleService {
       });
 
   }
-*/
+
 }
 
 

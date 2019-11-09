@@ -182,15 +182,15 @@ app.get('/schedules', (req, res, next) => {
    });
   
  
- /* delete schedule */
- //:id is a dynamic parameter that will be extracted from the URL
- app.delete("/schedules/:id", (req, res, next) => {
-    console.log('app.js deleteSchedule - id = ' + req.params.id)
-    Schedule.deleteOne({ _id: req.params.id }).then(result => {
-      console.log(result);
-      res.status(200).json("Deleted!");
-    });
+/* delete schedule */
+//:id is a dynamic parameter that will be extracted from the URL
+app.delete("/schedules/:id", (req, res, next) => {
+  console.log('app.js deleteSchedule - id = ' + req.params.id)
+  Schedule.deleteOne({ _id: req.params.id }).then(result => {
+    console.log(result);
+    res.status(200).json("Deleted!");
   });
+});
  
    
   /*  End of requests to schedules */ 
