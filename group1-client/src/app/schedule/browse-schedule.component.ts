@@ -69,22 +69,34 @@ export class BrowseScheduleComponent implements OnInit {
        );
      }
    
-    deleteSchedule(_id: string, rowId) {
+     deleteSchedule(_id: string, rowId) {
+      console.log('deleteSchedule row = ' + rowId )
       this._myService.deleteSchedule(_id)
-
+      setTimeout(this.delayMessage, 1000)
+      setTimeout(this.delayReload, 2000)
+ 
+ /*  
       this._myService.deleteSchedule(_id).subscribe(
-        data => { this.alertService.success('Schedule entry deleted!',false);
+        data => {
+
+           //this.alertService.success('Schedule entry deleted!',false);
         // delete TR from the DOM
         let table = document.querySelector('table');
-        table.deleteRow(rowId); 
-        location.reload
-       
+        table.deleteRow(rowId+1); 
+        setTimeout(location.reload, 3000)       
         },
         error => {this.alertService.error(error);
         console.error(error)},
         () => console.log('finished deleting schedules')
       );
+*/
+  }
+  delayMessage() {
+    alert('Schedule entry deleted')
+  }
 
+  delayReload() {
+    location.reload(true)
   }
 
   createSchedule() {
