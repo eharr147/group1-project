@@ -53,6 +53,8 @@ import {FeedbackService} from './feedback/feedback.service';
 import { RecipeService} from './recipes/recipe.service';
 /* Authentication services */
 import { fakeBackendProvider } from './_helpers';
+import { GetNutritionComponent } from './nutrition/get-nutrition.component';
+import { GetNutritionDetailComponent } from './nutrition/get-nutrition-detail.component';
 //import {UserService} from  './_services' 
 //import {AuthenticationService} from  './_services' 
 
@@ -68,7 +70,7 @@ import { fakeBackendProvider } from './_helpers';
     CreateScheduleComponent, BrowseScheduleComponent, EditScheduleComponent,
     CatalogComponent, ViewCatalogComponent,
     BrowseGroceriesComponent, CreateGroceriesComponent, CreateGroceryListComponent,
-     CreateFeedbackComponent, BrowseFeedbackComponent, ListFeedbackComponent
+     CreateFeedbackComponent, BrowseFeedbackComponent, ListFeedbackComponent, GetNutritionComponent, GetNutritionDetailComponent
   ],
   imports: [
     BrowserModule,ReactiveFormsModule,routing,HttpClientModule,FormsModule, NoopAnimationsModule,

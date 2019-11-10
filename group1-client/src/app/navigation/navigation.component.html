@@ -15,9 +15,17 @@
                     <a class="nav-link" [routerLink]="['/welcome']">Home <span class="sr-only">(current)</span></a>
                   </li>
 
-                  <li class="nav-item active">
-                      <a class="nav-link" [routerLink]="['/catalog-browse']">Recipe Catalog <span class="sr-only">(current)</span></a>
-                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuRecipe" role="button" 
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Recipes & Tools
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuRecipe">
+                          <a class="dropdown-item" [routerLink]="['/catalog-browse']">Recipes Catalog</a>
+                          <a class="dropdown-item" [routerLink]="['/nutrition-get']">Nutrition Facts</a>
+                        </div>
+                      </li>
+
 
                   <li class="nav-item dropdown">
                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuRecipe" role="button" 

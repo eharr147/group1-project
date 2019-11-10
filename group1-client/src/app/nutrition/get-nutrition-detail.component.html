@@ -1,0 +1,52 @@
+<app-navigation></app-navigation>
+<div *ngIf="!facts">Detail information not found</div>
+<div *ngIf="facts" class="card">
+      <h5 class="card-header">Nutrition Facts: {{facts.description}}</h5>
+ 
+      <small><i>Powered by USDA FoodData Central API : https://fdc.nal.usda.gov/</i></small>
+      <div class="card-body">
+        <h5>Category: {{facts.wweiaFoodCategory.wweiaFoodCategoryDescription}}</h5>      
+        Portion: {{facts.foodPortions[0].portionDescription}} ({{facts.foodPortions[0].gramWeight}}g) Calories:
+        {{facts.foodNutrients[3].amount}} {{facts.foodNutrients[3].nutrient.unitName}}
+        
+
+        <div id="accordion" class="accordion">
+                <div class="card mb-0">
+                        <div class="card-header collapsed" data-toggle="collapse" href="#collapseOne">
+                                <a class="card-title">
+                                   Nutrients
+                                </a>
+                        </div>
+                        <div id="collapseOne" class="card-body collapse" data-parent="#accordion">
+                                <ul *ngFor='let nutrient of facts.foodNutrients'>
+                                      <li>{{nutrient.nutrient.name}} : {{nutrient.amount}} {{nutrient.nutrient.unitName}} </li>
+                                      
+                                </ul>
+                               
+                        </div>
+                </div>
+        </div>
+        <div id="accordion2" class="accordion">
+                        <div class="card mb-0">
+                                <div class="card-header collapsed" data-toggle="collapse" href="#collapseTwo">
+                                        <a class="card-title">
+                                           Input Foods
+                                        </a>
+                                </div>
+                                <div id="collapseTwo" class="card-body collapse" data-parent="#accordion2">
+                                        <ul *ngFor='let inputfood of facts.inputFoods'>
+                                              <li>{{inputfood.foodDescription}} : {{inputfood.gramWeight}}g </li>
+                                              
+                                        </ul>
+                                       
+                                </div>
+                        </div>
+                </div>
+
+
+      </div>
+</div>
+<button class="btn btn-primary" (click)="goBack();">Back</button>
+
+
+
