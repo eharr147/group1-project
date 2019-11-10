@@ -12,6 +12,9 @@ const Recipe = require('./models/recipe')
 const Grocery = require('././models/grocery');
 const users=require('./models/Users');
 
+
+const request = require('request'); // need this for 3rd party API call
+
 // connect and display the status 
 //mongoose.connect('mongodb://localhost:27017/dbIT6203', { useNewUrlParser: true })
 //mongoose.connect('mongodb+srv://IT6203User:IT6203KSU@cluster0-chkhb.azure.mongodb.net/dbIT6203?retryWrites=true&w=majority', { useNewUrlParser: true })
@@ -522,6 +525,60 @@ app.post('/recipe/add', (req, res, next) => {
 
 
 /* End requests to Recipes module */
+
+/*******************************************************************************************
+ * Call USDA Food Data API 
+ * Express Middleware acts as a proxy to eliminate CORS policy issues in the browser 
+ *******************************************************************************************/
+/* API proxy for POST calls */
+app.post('/nutrition/search', (req, res, next) => {
+ 
+  console.log('/nutrition/search called')
+  console.log(req)
+  const _API_KEY = "TqHOqkgP5xrgx7VjuS01TCr2RQDXawq4uMCMOvFk"
+  const URL = "https://api.nal.usda.gov/fdc/v1/search?api_key=" + _API_KEY
+
+  request.post(
+    { url: URL,
+      json: req.body
+     },
+    (error, response, body) => {
+      if (error) {
+        return res.status(500).json({ type: 'error', message: error.message });
+      }
+     //console.log(body)
+     //res.status(201).json({'API call': 'processed'}); 
+     res.status(200).json(body)
+   
+    }
+  )
+ });
+
+ app.get('/nutrition/detail/:_id', (req, res, next) => {
+ 
+  let food_id = req.params._id;
+  console.log('/nutrition/detail/ ' + food_id)
+
+  const _API_KEY = "TqHOqkgP5xrgx7VjuS01TCr2RQDXawq4uMCMOvFk"
+  var URL = "https://api.nal.usda.gov/fdc/v1/" + food_id + "?api_key="+ _API_KEY
+  console.log('/nutrition/detail/ composed URL' + URL)
+
+  request.get(
+    { url: URL
+     },
+    (error, response, body) => {
+      if (error) {
+        return res.status(500).json({ type: 'error', message: error.message });
+      }
+     //console.log(body)
+     //res.status(201).json({'API call': 'processed'}); 
+     res.status(200).json(JSON.parse(body)); // use JSON.parse to return as usable JSON object!
+   
+    }
+  )
+});
+
+
 
 
 //to use this middleware in other parts of the application

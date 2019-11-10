@@ -16,6 +16,7 @@ const httpOptions = {
 export class ScheduleService {
 
   constructor(private http:HttpClient) {}
+  
  
   // Uses http.get() to load data 
   getSchedules() {

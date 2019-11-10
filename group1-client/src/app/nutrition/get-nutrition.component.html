@@ -1,0 +1,41 @@
+<app-navigation></app-navigation>
+<div class="card">
+    <div class="card-header">
+       <h1>Nutrition Facts Lookup</h1>
+
+    </div>    
+    <small><i>Powered by USDA FoodData Central API : https://fdc.nal.usda.gov/</i></small>
+    <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">Food name: </div>
+                <div class="col-sm-4"><input type="text" [(ngModel)]='food_name'/></div>
+                <div class="col-sm-2"><button class="btn btn-primary" (click)="searchFood()">Search</button></div>
+            </div>
+
+        <div *ngIf='foods && foods.length == 0'>Nothing found....</div>
+        <div class="table-responsive">
+            <table  id="foods" class="table" *ngIf='foods && foods.length > 0'>
+                    <thead class="thead-light"> 
+                            <tr>
+                              <th scope="col">Description</th>
+                              <th></th>
+                            </tr>
+                    </thead>
+                    <tbody >
+                            <tr *ngFor='let thisFood of foods; let i=index'>
+                              <td>{{thisFood.description}}   </td>
+                              
+                            <td><button class="btn btn-primary" [routerLink]="['/nutrition-detail', thisFood.fdcId]">Details</button></td>
+                            </tr>
+          
+                        </tbody>
+          
+
+                
+            </table>
+
+        </div>
+
+</div>
+
+

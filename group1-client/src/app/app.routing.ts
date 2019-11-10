@@ -23,6 +23,8 @@ import {ListFeedbackComponent} from './feedback/list-feedback.component';
 
 import { BrowseRecipeComponent } from './recipes/browse-recipe.component';
 import { CreateRecipeComponent } from './recipes/create-recipe.component';
+import { GetNutritionComponent } from './nutrition/get-nutrition.component';
+import { GetNutritionDetailComponent } from './nutrition/get-nutrition-detail.component';
 
 const appRoutes: Routes = [
     { path: '', component: WelcomeComponent, canActivate: [AuthGuard] },
@@ -49,6 +51,8 @@ const appRoutes: Routes = [
     {path: 'catalog-view/:_id', component: ViewCatalogComponent}, 
     {path: 'catalog-browse/:_return', component: CatalogComponent}, 
 
+    {path: 'nutrition-get', component: GetNutritionComponent},
+    {path: 'nutrition-detail/:_id', component: GetNutritionDetailComponent},
 
     {path:'login',component:LoginComponent},
     {path:'register',component:RegisterComponent},

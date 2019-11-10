@@ -5,9 +5,10 @@
 E. Harris, E. Gladstone, H. Reddy and A. K-Pushpakath
 
 ##This repo contains the client and server side projects for the DINNER PLANNER application
-Current version: 10.1
+Current version: 11.3
 Status by module:
 Recipes: L10 complete - needs Update function
 Schedule: Complete
 Feedback: Complete
-Groceries: L9 - Needs all database CRUD functions
+Groceries: L10 complete - needs Update function
+API implemenation complete
