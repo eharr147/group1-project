@@ -1,6 +1,15 @@
- <app-navigation></app-navigation>
- <div>
- <form [formGroup]="recipeForm">
+<app-navigation></app-navigation>
+
+<div class="card">
+    <div class="card-header text-center">
+      <h1>{{this.title}}</h1>
+    </div>
+</div>
+
+<div class="card-body"> 
+  <div class="container-fluid">
+
+    <form [formGroup]="recipeForm">
     
     <label>
       Recipe Name:
@@ -77,11 +86,13 @@
 
        <button class="btn btn-primary"  (click)="onSubmit()">Save Recipe</button>
 
-
-</form>
-
+    </form>
+  </div>
 </div>
 
+<!--
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
     <h5>Form Value</h5>
     <pre>{{recipeForm.value | json}}</pre>
+-->
   

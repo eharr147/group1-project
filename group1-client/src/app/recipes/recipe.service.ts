@@ -22,6 +22,11 @@ getRecipes() {
 return this.http.get('http://localhost:8000/recipes');
 
 }
+
+getRecipesByUser(userId) {
+  return this.http.get('http://localhost:8000/recipes/user/' + userId);
+}
+
 deleteRecipe(recipeId: string) {
   this.http.delete("http://localhost:8000/recipes/" + recipeId)
     .subscribe(() => {
@@ -35,14 +40,22 @@ deleteRecipe(recipeId: string) {
     /* arrays */
     ,ingredients, steps      
     ) {
-    this.http.post('http://localhost:8000/recipe/add',
+    return this.http.post('http://localhost:8000/recipe/add',
     { name, description,cuisine, usage, effort_lvl, contributor, servings, calories
   ,ingredients, steps    })
-  .subscribe((responseData) => {
-     console.log(responseData);
-   }); 
+ 
+  }
+
+   updateRecipe(recipeId: string, name: string, description: string, cuisine: string,
+    usage, effort_lvl, contributor, servings, calories, ingredients, steps) 
+    {
+    
+        return this.http.put("http://localhost:8000/recipes/" 
+             + recipeId,
+             { name, description,cuisine, usage, effort_lvl, contributor, servings, calories
+              ,ingredients, steps    })
+
+          //location.reload();
+    }
+
 }
-}
-
-
-

@@ -23,6 +23,7 @@ import {ListFeedbackComponent} from './feedback/list-feedback.component';
 
 import { BrowseRecipeComponent } from './recipes/browse-recipe.component';
 import { CreateRecipeComponent } from './recipes/create-recipe.component';
+
 import { GetNutritionComponent } from './nutrition/get-nutrition.component';
 import { GetNutritionDetailComponent } from './nutrition/get-nutrition-detail.component';
 
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
 
     {path: 'recipes-browse', component: BrowseRecipeComponent},
     {path: 'recipes-create', component: CreateRecipeComponent},
+    {path: 'editRecipe/:_id', component: CreateRecipeComponent}, 
 
     {path: 'feedback-browse', component: BrowseFeedbackComponent},
     //{path: 'feedback-create', component: CreateFeedbackComponent}, remove direct route to Feedback creation
@@ -56,8 +58,11 @@ const appRoutes: Routes = [
 
     {path:'login',component:LoginComponent},
     {path:'register',component:RegisterComponent},
+
     {path: 'groceries-browse', component: BrowseGroceriesComponent},
     {path: 'groceries-create', component: CreateGroceriesComponent},
+    {path: 'groceries-edit/:_id', component: CreateGroceriesComponent},
+
     /* 404 and redirection */
     {path: 'welcome', component: WelcomeComponent , canActivate: [AuthGuard]},
       {path: '', redirectTo: 'welcome', pathMatch: 'full'},

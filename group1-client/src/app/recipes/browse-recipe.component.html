@@ -1,14 +1,55 @@
 <app-navigation></app-navigation>
-<div class="spacer">
+
+<!-- Standardize presentation in Responsive Table-->
+<div class="card">
+        <div class="card-header">My Recipe Contributions</div>
+    
+        <div *ngIf='Recipes && Recipes.length == 0'>You have not contributed any recipes....</div>
+        <div class="table-responsive">
+            <table  id="recipes" class="table" *ngIf='Recipes && Recipes.length > 0'>
+                <thead class="thead-light"> 
+                    <tr>
+                      <th scope="col">Title</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Cuisine</th>
+                      <th colspan="2"></th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                      <tr *ngFor ="let recipe of Recipes let i = index">
+                        <td>
+                                {{recipe.name}} 
+    
+                        </td>
+                        <td>{{recipe.description}}</td>
+                        <td>{{recipe.cuisine}}</td>
+                      <td><button class="btn btn-primary" [routerLink]="['/editRecipe', recipe._id]">Edit</button></td>
+                      <td><button class="btn btn-danger" (click)="onDelete(recipe._id)">Delete</button></td>
+                      </tr>
+    
+                  </tbody>
+            </table>
+    
+    
+        </div> 
+    </div>  
+<!--
+<div>Authenticated user is {{currentUser.firstName}} {{currentUser.lastName}} and username is {{myUserId}}</div>
+
+    <div class="spacer"></div>
 
     <div>
 
         <ul *ngFor ="let recipe of Recipes let i = index">
         
         <li> {{recipe.name}}: {{recipe.description}} {{recipe.cuisine}} 
-         <button class="btn btn-primary" (click)="onDelete(recipe._id)">DELETE</button></li>
+         <button class="btn btn-danger" (click)="onDelete(recipe._id)">DELETE</button>  
+         <button class="btn btn-primary" [routerLink]="['/editRecipe', recipe._id]">UPDATE</button></li>
         </ul>
         
         </div>
 
 <div>
+    -->
+
+

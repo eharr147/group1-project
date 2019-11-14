@@ -137,8 +137,17 @@ currentUserSubscription:Subscription;
       this.feedbackservice.updatefeedback(this.id,
         //this.feedbackform.controls.Recipeno.value,
         //this.feedbackform.controls.firstname.value,this.feedbackform.controls.Lastname.value
-        this.feedbackform.controls.comments.value)
-            this.router.navigate(['/feedback-browse']);  
+        this.feedbackform.controls.comments.value).subscribe(
+
+          data =>{
+            this.alertService.success('Feedback Updated Successfully!',false);
+                   
+          },
+          error=>{
+            this.alertService.error(error);
+           
+          });
+            //this.router.navigate(['/feedback-browse']);  
         
       
     }
