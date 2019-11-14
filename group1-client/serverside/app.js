@@ -28,7 +28,7 @@ mongoose.connect('mongodb+srv://egladsto:IT6203project@group1-project-hshbd.mong
 
 // use the following code on any request that matches the specified mount path
 app.use((req, res, next) => {
-   console.log('This line is always called');
+
  //  res.setHeader('Access-Control-Allow-Origin', '*'); //can connect from any host
  //  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS'); //allowable methods
  //  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept');
@@ -475,6 +475,7 @@ app.get('/feedback/user/:userId', (req, res, next) => {
 /* Requests to Recipes module */
 app.get('/recipes', (req, res, next) => {
   //call mongoose method find (MongoDB db.Students.find())
+  console.log ("/recipes called"); 
  Recipe.find() 
    //if data is returned, send data as a response 
    .then(data => res.status(200).json(data))
@@ -483,46 +484,101 @@ app.get('/recipes', (req, res, next) => {
    console.log('Error: ${err}');
    res.status(500).json(err);
  });
-   
-//send the array as the response 
-   console.log ("getrecipes");
 });
+
+/* Find  schedules by user */
+app.get('/recipes/user/:id', (req, res, next) => {
+  let id = req.params.id;
+  console.log('/recipes/user/:id = ' + id)
+
+ Recipe.find({contributor: id}).sort('name') 
+ //if data is returned, send data as a response 
+ .then(data => {res.status(200).json(data)
+        //console.log(data)
+})
+ //if error, send internal server error
+ .catch(err => {
+ console.log('Error: ${err}');
+ res.status(500).json(err);
+});
+
+});
+
+
 //:id is a dynamic parameter that will be extracted from the URL
 app.delete("/recipes/:id", (req, res, next) => {
+   console.log ("delete /recipes called");
    Recipe.deleteOne({ _id: req.params.id }).then(result => {
      console.log(result);
      res.status(200).json("Deleted!");
    });
  });
 
-app.post('/recipe/add', (req, res, next) => {
-       // create a new student variable and save request’s fields 
- console.log('recipe/add called')
- console.log(req.body)
- const recipe = new Recipe({
-   name: req.body.name,
-   description: req.body.description,
-   cuisine: req.body.cuisine,
-   usage: req.body.usage,
-   effort_lvl: req.body.effort_lvl,
-   contributor: req.body.contributor,
-   servings: req.body.servings,
-   calories: req.body.calories,
-   ingredients: req.body.ingredients,
-   steps: req.body.steps 
+ app.post('/recipe/add', (req, res, next) => {
+   // create a new student variable and save request’s fields 
+console.log('recipe/add called')
+console.log(req.body)
+const recipe = new Recipe({
+name: req.body.name,
+description: req.body.description,
+cuisine: req.body.cuisine,
+usage: req.body.usage,
+effort_lvl: req.body.effort_lvl,
+contributor: req.body.contributor,
+servings: req.body.servings,
+calories: req.body.calories,
+ingredients: req.body.ingredients,
+steps: req.body.steps 
+});
+//send the document to the database 
+recipe.save()
+//in case of success
+.then(() => { console.log('Success');
+res.status(201).json({'recipe': 'recipe added successfully'});  
+})
+//if error
+.catch(err => {console.log('Error:' + err);
+res.status(400).send("recipe/add - unable to save to database")
+});
  });
- //send the document to the database 
- recipe.save()
-   //in case of success
-   .then(() => { console.log('Success');
-   res.status(201).json({'recipe': 'recipe added successfully'});  
-  })
-   //if error
-   .catch(err => {console.log('Error:' + err);
-   res.status(400).send("recipe/add - unable to save to database")
-  });
-     });
 
+// serve incoming put requests to /students
+app.put('/recipes/:id', (req, res, next) => {
+ console.log('put /recipes/:id called')
+ console.log("id: " + req.params.id)
+ console.log(req.body)
+ // check that the parameter id is valid 
+ if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+   //find a document and set new first and last names
+   Recipe.findOneAndUpdate({_id: req.params.id},
+     {$set:{name : req.body.name,
+       description : req.body.description,
+       cuisine: req.body.cuisine,
+       usage: req.body.usage,
+       effort_lvl: req.body.effort_lvl,
+       contributor: req.body.contributor,
+       servings: req.body.servings,
+       calories: req.body.calories,
+       ingredients: req.body.ingredients,
+       steps: req.body.steps   
+
+     }},{new:true}) 
+    .then((recipe) => {
+       if (recipe) { 
+         console.log(recipe);
+         res.status(200).json("Updated!");
+       } else {
+         console.log("no data exist for this id");
+       }
+    })
+   .catch((err) => {
+     console.log(err);
+    });
+} else {
+  console.log("please provide correct id");
+}
+ 
+});  
 
 /* End requests to Recipes module */
 

@@ -4,6 +4,7 @@
   <ul *ngFor ="let grocery of groceries let i = index">
     <li> {{grocery.ingredient}}: {{grocery.quantity}} (index {{i}})
       <button mat-button color="warn" (click)="deleteGrocery(grocery._id);">DELETE</button>
+      <button mat-button color="accent" [routerLink]="['/groceries-edit',grocery._id]">UPDATE</button>
   
     </li>
    </ul>
