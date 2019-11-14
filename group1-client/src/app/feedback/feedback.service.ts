@@ -57,11 +57,9 @@ updatefeedback(_id:string,
   // don't update keys and key-derived fields
   //Recipeno:string,firstname:string,Lastname:string,
   comments:string){
-  this.http.put("http://localhost:8000/feedback/update/"+_id,
+  return this.http.put("http://localhost:8000/feedback/update/"+_id,
       {//Recipeno,firstname,Lastname,
         comments})
- .subscribe(()=>{
-   console.log('Comment Updated');
-  });
+
 }
 }

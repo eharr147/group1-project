@@ -384,6 +384,7 @@ app.get('/feedback/user/:userId', (req, res, next) => {
        .then((feedbacks)=>{
          if(feedbacks) {
            console.log(feedbacks);
+           res.status(200).json("Updated!");
          }
          else{
            console.log("no data for this id");
