@@ -1,3 +1,42 @@
 <app-navigation></app-navigation>
-<app-create-grocery-list></app-create-grocery-list>
+<!--<app-create-grocery-list></app-create-grocery-list> -->
 
+<div class="card-header">{{mode}} Grocery List</div>
+<br>
+<form [formGroup]="groceryForm" (ngSubmit)="onSubmit()">
+  <div class="form-row">
+    <div class="col-xs-4 col-sm-4">
+        <label for="ingredient">Grocery Item:</label>
+        <input type="text" class="form-control" id="ingredient" formControlName="ingredient" 
+         required>
+    </div>
+    <div class="col-xs-2 col-sm-2">
+      <label for="quantity">Quantity:</label>
+      <input type="text" class="form-control" id="quantity" formControlName="quantity" 
+       required>
+  </div>
+  <div class="col-xs-2 col-sm-2"> 
+    <label for="unit">Unit:</label>
+    <input type="text" class="form-control" id="unit" formControlName="unit" 
+     required>
+  </div>
+  <div class="row" style="padding: 20px">
+    <div  style="padding-top: 10px">
+        <button class="btn btn-primary" type="submit">Add To List</button>
+    </div>    
+  </div>
+  </div>
+</form>
+<div class="row" style="padding: 20px">
+  <div  style="padding-top: 20px">
+      <button class="btn btn-primary" (click)="clear();">Clear</button>
+  </div>
+  <div  style="padding: 20px 20px"> 
+    <button class="btn btn-primary" (click)="back();">Back</button>
+  </div>
+      
+</div>
+
+
+
+  

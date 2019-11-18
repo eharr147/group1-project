@@ -9,33 +9,36 @@ const httpOptions = {headers: new HttpHeaders({ 'Content-Type': 'application/jso
         constructor(private http:HttpClient) {}
     // Uses http.get() to load data 
         getGroceries() {
-            return this.http.get('http://localhost:8000/groceries');
-           
+            return this.http.get('http://localhost:8000/groceries/');
+          //  location.reload();
         }
-        getGroceriesId(id : string) {           
-            return this.http.get('http://localhost:8000/groceries/'+id);
-               
-        }
-        createGroceryList(ingredient: string, quantity: string) {
-            this.http.post('http://localhost:8000/groceries',{ ingredient, quantity })
-          .subscribe((responseData) => {
-             console.log(responseData);
-           }); 
-           location.reload();
-    }
-    deleteGrocery(id: string) {
-        console.log('About to Delete: ' + id);
-        this.http.delete("http://localhost:8000/groceries/"+id)
+        createGroceryList(userId: string, ingredient: string, quantity: string,unit:string) {  
+          console.log('createGroceryList called')         
+           return this.http.post('http://localhost:8000/groceries/create/',{ userId, ingredient, quantity,unit })
+
+        } 
+        
+        getGroceriesByUser(userId) {
+          return this.http.get('http://localhost:8000/groceries/user/' + userId);
+      }
+      
+        deleteGrocery(id: string) {        
+          console.log('deleteGrocery called')
+        this.http.delete("http://localhost:8000/groceries/delete/"+id)
           .subscribe(() => {   
               console.log('Deleted: ' + id);
           });  
-          location.reload();        
+          location.reload();                 
         }
-    editGroceryList(id: string,ingredient: string, quantity: string) {  
-        this.http.put("http://localhost:8000/groceries/"+ id,{ ingredient, quantity })
-          .subscribe(() => {   
-              console.log('Updated: ' + id);    
-            });    
-              location.reload();   
-        } 
+        editGroceryList(id:string,ingredient: string, quantity: string,unit:string){
+        console.log('editGroceryList called')
+        return this.http.put("http://localhost:8000/groceries/edit/"+id,{ ingredient, quantity,unit })
+
+         
+        }
+        editItem(_id: string) {   
+          console.log('editItem called')        
+            return this.http.get("http://localhost:8000/groceries/item/" + _id);
+          }
     }
+   

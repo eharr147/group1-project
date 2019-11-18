@@ -1,11 +1,32 @@
 
 <app-navigation></app-navigation>
-<div>
-  <ul *ngFor ="let grocery of groceries let i = index">
-    <li> {{grocery.ingredient}}: {{grocery.quantity}} (index {{i}})
-      <button mat-button color="warn" (click)="deleteGrocery(grocery._id);">DELETE</button>
-      <button mat-button color="accent" [routerLink]="['/groceries-edit',grocery._id]">UPDATE</button>
-  
-    </li>
-   </ul>
+<div class="card-header">Grocery List</div>
+<div *ngIf='groceries && groceries.length == 0'>You have not added any groceries yet...</div>
+<div *ngIf='groceries && groceries.length > 0' class="table-responsive">
+    <table class="table">  
+        <thead class="thead-light">
+             <tr>
+               <th scope="col">Grocery Item</th>
+               <th scope="col">Quantity</th>
+               <th scope="col">Unit</th>
+               <th scope="col"></th>
+               <th scope="col"></th>
+             </tr>
+           </thead>
+
+           <tbody>
+  <tr *ngFor ="let grocery of groceries let i = index">
+      <td>{{grocery.ingredient}}</td>
+      <td>{{grocery.quantity}}</td>
+      <td>{{grocery.unit}}</td>
+      <td>
+          <button class="btn btn-primary" [routerLink]="['/groceries-edit', grocery._id]">Edit</button>
+      </td>
+      <td>
+          <button class="btn btn-danger" (click)="deleteGrocery(grocery._id,grocery.ingredient);">DELETE</button>
+      </td>
+</tr>
+</tbody>
+</table>
+<!--button class="btn btn-primary" (click)="back();">Back</button>-->
 </div>
