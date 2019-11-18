@@ -32,7 +32,6 @@ import { CreateScheduleComponent } from './schedule/create-schedule.component';
 import { EditScheduleComponent } from './schedule/edit-schedule.component';
 import { BrowseGroceriesComponent } from './groceries/browse-groceries.component';
 import { CreateGroceriesComponent } from './groceries/create-groceries.component';
-import { CreateGroceryListComponent } from './groceries/create-grocery-list/create-grocery-list.component';
 import { CreateFeedbackComponent } from './feedback/create-feedback.component';
 import { BrowseFeedbackComponent } from './feedback/browse-feedback.component';
 import { ListFeedbackComponent } from './feedback/list-feedback.component';
@@ -69,7 +68,7 @@ import { GetNutritionDetailComponent } from './nutrition/get-nutrition-detail.co
     BrowseRecipeComponent, CreateRecipeComponent,
     CreateScheduleComponent, BrowseScheduleComponent, EditScheduleComponent,
     CatalogComponent, ViewCatalogComponent,
-    BrowseGroceriesComponent, CreateGroceriesComponent, CreateGroceryListComponent,
+    BrowseGroceriesComponent, CreateGroceriesComponent, 
      CreateFeedbackComponent, BrowseFeedbackComponent, ListFeedbackComponent, GetNutritionComponent, GetNutritionDetailComponent
   ],
   imports: [

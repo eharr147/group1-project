@@ -242,12 +242,13 @@ app.delete("/schedules/:id", (req, res, next) => {
  
  /* End of requests to Catalog */ 
  
- /****************************************
+  /****************************************
   * GROCERIES
   * **************************************/
 
 /* Requests for Grocery module */
 app.get('/groceries',(req, res, next) => {
+  console.log('groceries called')
   Grocery.find()
     //if data is returned, send data as a response 
     .then(data => res.status(200).json(data))
@@ -258,11 +259,47 @@ app.get('/groceries',(req, res, next) => {
   });
 });
 
+ /* Find  groceries by user */
+ app.get('/groceries/user/:id', (req, res, next) => {
+  let id = req.params.id;
 
-app.post('/groceries', (req, res, next) => 
-{const grocery = new Grocery({
+ Grocery.find({ userId: id}) 
+ //if data is returned, send data as a response 
+ .then(data => res.status(200).json(data))
+ //if error, send internal server error
+ .catch(err => {
+ console.log('Error: ${err}');
+ res.status(500).json(err);
+});
+});
+
+app.get('/groceries/item/:id', (req, res, next) => {
+  console.log('groceries/item/:id called')
+  //call mongoose method find
+  let id = req.params.id;
+  console.log('grocery/item id is ' + id)
+ Grocery.findById(id) 
+ //if data is returned, send data as a response 
+ .then(data => res.status(200).json(data))
+
+ .catch(err => {
+ console.log('Error: ${err}');
+ res.status(500).json(err);
+});
+   console.log('This is the response from grocery/item');
+
+});
+
+
+app.post('/groceries/create', (req, res, next) => 
+{
+  console.log('groceries/create called')
+  
+  const grocery = new Grocery({
+  userId: req.body.userId,
   ingredient: req.body.ingredient,
-  quantity: req.body.quantity  
+  quantity: req.body.quantity,
+  unit:  req.body.unit
 });
  
 //send the document to the database 
@@ -270,27 +307,49 @@ grocery.save()
   //success
   .then(() => { 
     console.log('Success');
-    console.log(grocery.ingredient + " " + grocery.quantity);
-    res.status(201).json('Post successful');        
-   })
-  //if error
+    console.log(grocery.userId + " " + grocery.ingredient + " " + grocery.quantity+ " " + grocery.unit);
+    res.status(201).json('Grocery post successful');        
+   })  
   .catch(err => {
     console.log('Error:' + err);
     res.status(400).json('Post not successful');    
    });
-/*  const grocery = req.body;
-  console.log(grocery.ingredient + " " + grocery.quantity);
-//sent an acknowledgment back to caller 
-  res.status(201).json('Post successful');*/
   
 })
 
-app.delete('/groceries/:id', (req, res, next) => {
+app.delete('/groceries/delete/:id', (req, res, next) => {
+  console.log('groceries/delete called')
  Grocery.deleteOne({ _id: req.params.id }).then(result => {
    console.log(result);
    res.status(200).json("Deleted!");
  });
 });
+
+app.put('/groceries/edit/:id', (req, res, next) => {
+  console.log('groceries/edi called')
+  console.log("groceries/edit/id: " + req.params.id)
+
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+
+      Grocery.findOneAndUpdate({_id: req.params.id},
+        {$set:{ingredient : req.body.ingredient,
+          quantity : req.body.quantity,
+          unit : req.body.unit }},{new:true}) 
+       .then((grocery) => {
+          if (grocery) { 
+            console.log(grocery);
+            res.status(201).json('Grocery update successful')
+          } else {
+            console.log("No data exist for this id");
+          }
+       })
+      .catch((err) => {
+        console.log(err);
+       });
+   } else {
+     console.log("Please provide correct id");
+   }
+  });  
 
 /*  End of requests to Grocery module */ 
 /************************************
